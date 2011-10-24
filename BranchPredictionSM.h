@@ -1,76 +1,68 @@
 //
-//  BranchPredictionSM.cpp
+//  BranchPredictionSM.h
 //  CISCsim
 //
 //  Created by Andrew Kordik on 10/5/11.
 //  Copyright 2011 University of Dayton. All rights reserved.
 //
 
-#include <iostream>
-
-#include "BranchPredictionSM.h"
-
+#ifndef CISCsim_BranchPredictionSM_h
+#define CISCsim_BranchPredictionSM_h
 
 
-
-BranchPredictionSM::BranchPredictionSM(){
-    this->currentState = NN; //! Set the current State to the initial state
-    this->isBranchPredicted = false; //! Predict First branch not taken
-}
-
-bool BranchPredictionSM::GetPrediction(){
-    switch( this->currentState ) 
-    {
-        case TT :
-            this->isBranchPredicted = true;
-        case TN :
-            this->isBranchPredicted = true;
-        case NT :
-            this->isBranchPredicted = true;
-        case NN :
-            this->isBranchPredicted = false;
-    }
-    
-    return this->isBranchPredicted;
-    
-}
-
-void BranchPredictionSM::UpdateSM(bool branchWasTaken){
-    if( branchWasTaken )
-    {
-        switch (this->currentState){
-            case TT :
-                currentState = TT;
-                break;
-            case TN :
-                currentState = NT;
-                break;
-            case NT :
-                currentState = TT;
-                break;
-            case NN :
-                currentState = NT;
-                break;
-        }
-                
-    }// if( branchWasTaken )
-    else // Branch Was NOT taken
-    {
-        switch (this->currentState){
-            case TT :
-                currentState = TN;
-                break;
-            case TN :
-                currentState = NN;
-                break;
-            case NT :
-                currentState = TN;
-                break;
-            case NN :
-                currentState = NN;
-                break;
-        } // switch (this->currentState)
-    }// else [ if(branchWasTaken) ]
+//! Two Bit Branch Prediction State Machine
+/*!
+ This class implements a Two-Bit Branch Predicion State
+ Machine as described on Page 226 of "Modern Processor Design" by Shen
+ */
+class BranchPredictionSM
+{
+private:
+    //! Enumeration of Possible States
+    enum state 
+    {   TT, /*< Taken, Taken */
+        NT, /*< Not-taken, Taken */
+        TN, /*< Taken, Not-taken */
+        NN  /*< Not-taken, Not-taken */
+    };
     
     
-}
+    //! The Current State of the State Machine
+    state currentState;
+    
+    //! True if the Branch is predicted as taken
+    bool isBranchPredicted;
+    
+public:
+    
+    //! Constructor
+    /*!
+     Initialize currentState to be NN
+     Initialize isBranchPredicted to false
+     */
+    BranchPredictionSM();
+    
+    //! Destructor
+    ~BranchPredictionSM();
+    
+    //! Check to see if a branch should be predicted
+    /*!
+     @return True if the branch shoule be taken, False Otherwise
+     */
+    bool GetPrediction();
+    
+    //! Updates the State of the StateMachine
+    /*!
+     Updates the State Machine based on the input
+     @param branchWasTaken is True of the branch was taken, and False other wise
+     */
+    void UpdateSM(bool branchWasTaken);
+    
+    
+    
+    
+};
+
+
+
+#endif
