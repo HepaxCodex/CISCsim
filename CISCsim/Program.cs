@@ -9,6 +9,10 @@ namespace CISCsim
     {
         static void Main(string[] args)
         {
+            System.Console.WriteLine("Hello World\n");
+
+            System.Console.WriteLine("Press Any Key To Exit\n");
+            System.Console.Read();
         }
     }
 }
