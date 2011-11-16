@@ -10,23 +10,23 @@ namespace CISCsim
         /// <summary>
         /// Current State of the Branch Predictor
         /// </summary>
-        private struct BranchState
+        private struct branchState
         {
             /// <summary>
             /// This is the LAST result a brach 
             /// </summary>
-            public bool mostRecentResult = false;
+            public bool mostRecentResult;
             /// <summary>
             /// This is the second to last result of a branch
             /// </summary>
-            public bool secondMostRecentResult = false;
+            public bool secondMostRecentResult;
         }
 
         /// <summary>
         /// Current State of the State Machine
         /// GET - Current State value
         /// </summary>
-        private BranchState currentState;
+        private branchState currentState;
 
 
         /// <summary>
@@ -61,13 +61,13 @@ namespace CISCsim
         /// Updates the state machine with the
         /// result of a branch.
         /// </summary>
-        /// <param name="branchWasTaken">True if a branch was taken at the current location</param>
-        public void Update(bool branchWasTaken)
+        /// <param name="_branchWasTaken">True if a branch was taken at the current location</param>
+        public void Update(bool _branchWasTaken)
         {
             // Shift the old result
             this.currentState.secondMostRecentResult = this.currentState.mostRecentResult;
             // Set the most reset result
-            this.currentState.mostRecentResult = branchWasTaken;
+            this.currentState.mostRecentResult = _branchWasTaken;
      
         }
 
