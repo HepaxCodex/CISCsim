@@ -1,0 +1,15 @@
+add.d
+addiu
+addu
+beq
+bne
+cvt.d.s
+cvt.s.d
+l.s
+lw
+mtc1
+mul.s
+s.s
+sll
+slt
+
