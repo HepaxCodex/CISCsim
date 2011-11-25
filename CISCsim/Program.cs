@@ -15,7 +15,9 @@ namespace CISCsim
             AndrewTest.RunTest();
             
 
+            FetchStage testFetch = new FetchStage(4, "..\\..\\InputFiles\\fpppp.tra");
 
+            testFetch.Fetch();
 
             System.Console.WriteLine("Press Any Key To Exit\n");
             System.Console.Read();
