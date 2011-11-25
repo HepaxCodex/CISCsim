@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="BranchPredictionSM.cs" />
     <Compile Include="GShareBranchPredictor.cs" />
+    <Compile Include="Instruction.cs" />
+    <Compile Include="InstructionParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
