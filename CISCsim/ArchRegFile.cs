@@ -17,7 +17,7 @@ namespace CISCsim
         /// 63 == HiLo
         /// 64 == FCC
         /// </summary>
-        public ArfEntry[65] regFile;
+        public ArfEntry[] regFile;
 
         public ArchRegFile()
         {

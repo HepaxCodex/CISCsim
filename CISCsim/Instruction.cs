@@ -189,9 +189,9 @@ namespace CISCsim
                     this.dest = tokens[0];
                     break;
                 case 2:
-                    if (tokens[2].Contains('(')) // Actually has 3 arguments but in r1,10(r3) form
+                    if (tokens[1].Contains('(')) // Actually has 3 arguments but in r1,10(r3) form
                     {
-                        string[] lastargs = tokens[2].Split(new char[] { '(', ')' });
+                        string[] lastargs = tokens[1].Split(new char[] { '(', ')' });
                         this.dest = tokens[0];
                         this.source1 = lastargs[0];
                         this.source2 = lastargs[1];
