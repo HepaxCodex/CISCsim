@@ -36,6 +36,16 @@ namespace CISCsim
         /// </summary>
         private StreamReader traceReader;
 
+        /// <summary>
+        /// How many more cycles to wait before fetching because we missed cache.
+        /// </summary>
+        private int cacheMissCountdown;
+
+        /// <summary>
+        /// Tells if we missed cache on the last time we tried to fetch
+        /// </summary>
+        private bool cacheMissed;
+
         public FetchStage()
         {
         }
@@ -46,6 +56,8 @@ namespace CISCsim
         /// </summary>
         public FetchStage(int superScalarWidth, string instructionTraceFilename)
         {
+            this.cacheMissed = false;
+            this.cacheMissCountdown = 0;
             this.ssw = superScalarWidth;
             this.fetchBuffer = new Instruction[superScalarWidth];
             this.fetchBufferIndexValid = new BitArray(superScalarWidth);
@@ -70,6 +82,31 @@ namespace CISCsim
             int numSlotsOpen = 0;
             int[] openSlotIndices;
             String line;
+            Random rand = new Random();
+
+            if (this.cacheMissed == false)
+            {
+                // We didn't miss the cache last time, so we have to see if we miss this time
+                // TODO: Fix cache miss check so that we can use a setting to change % miss
+                if (rand.Next(100) == 0)
+                {
+                    //We did miss cache; set cacheMiss = true and the appropriate cacheMissCountdown
+                    this.cacheMissed = true;
+                    // TODO: Fix cache miss countdown to use a setting for cycles to access
+                    this.cacheMissCountdown = 5;
+                    return 0;
+                }
+            }
+            else
+            {
+                // We did miss cache. If cacheMissCountdown is > 0, we have to wait more cycles, so we return.
+                // Otherwise, we can move on and fetch.
+                if (this.cacheMissCountdown > 0)
+                {
+                    this.cacheMissCountdown--;
+                    return 0;
+                }
+            }
 
             openSlotIndices = new int[this.fetchBufferIndexValid.Count];
 
@@ -99,7 +136,19 @@ namespace CISCsim
                     // TODO: end of the file - do something now?
                 }
             }
+
+            // Reset cache miss
+            this.cacheMissed = false;
+
             return numInstructionsRead;
         } //end Fetch()
+
+        public void Clear()
+        {
+            for (int i = 0; i < this.ssw; i++)
+            {
+                this.fetchBufferIndexValid[i] = false;
+            }
+        }
     }
 }
