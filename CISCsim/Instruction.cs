@@ -47,12 +47,20 @@ namespace CISCsim
             this.instruction = tokens[1];
 
             this.executionType = getExecutionType(tokens[1]);
+            this.setArguments(tokens[2]);
 
 
         }
 
 
+        /// <summary>
+        /// Figures out what type of Exeuction Unit is appliciable for the instruction
+        /// </summary>
+        /// <param name="instructionName">The instruction name i.e. addi, mov, j</param>
+        /// <returns>The Execution Type of the INstruciotn</returns>
         private ExecutionType getExecutionType(string instructionName){
+            ExecutionType result;
+
             switch (instructionName)
             {
                 case "j":
@@ -67,7 +75,7 @@ namespace CISCsim
                 case "bgez":
                 case "bc1f":
                 case "bc1t":
-                    return ExecutionType.Branch;
+                    result = ExecutionType.Branch;
                     break;
                 case "lb":
                 case "lbu":
@@ -81,7 +89,7 @@ namespace CISCsim
                 case "sw":
                 case "s.s":
                 case "s.d":
-                    return ExecutionType.Mem;
+                    result = ExecutionType.Mem;
                     break;
                 case "add":
                 case "addi":
@@ -99,7 +107,7 @@ namespace CISCsim
                 case "dmfc1":
                 case "mtc1":
                 case "dmtc1":
-                    return ExecutionType.Integer;
+                    result =  ExecutionType.Integer;
                     break;
                 case "and":
                 case "andi":
@@ -118,7 +126,7 @@ namespace CISCsim
                 case "slti":
                 case "sltu":
                 case "sltiu":
-                    return ExecutionType.Logical;
+                    result = ExecutionType.Logical;
                     break;
                 case "add.s":
                 case "add.d":
@@ -138,21 +146,28 @@ namespace CISCsim
                 case "c.lt.d":
                 case "c.le.d":
                 case "sqrt.d":
-                    return ExecutionType.FloatingPoint;
+                    result =  ExecutionType.FloatingPoint;
                     break;
                 case "syscall":
                 case "nop":
-                    return ExecutionType.Nop;
+                    result = ExecutionType.Nop;
                     break;
                 default :
                     System.Console.WriteLine("ERROR: Unknown Instruction Type \"{0}\"", instructionName);
                     System.Console.WriteLine("       Using Execution Type of \"Nop\"");
                     System.Console.WriteLine("       ... press any key to continue ... ");
                     System.Console.Read();
-                    return ExecutionType.Nop;
+                    result = ExecutionType.Nop;
                     break;
-
             }
+
+            return result;
+
+        }
+
+
+        private void setArguments(string args)
+        {
 
         }
 
