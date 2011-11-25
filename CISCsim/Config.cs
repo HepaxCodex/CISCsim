@@ -10,11 +10,11 @@ namespace CISCsim
     /// </summary>
     static class Config
     {
-        public int superScalerFactor          = 5;
-        public int numReservationStations     = 10;
-        public int numFunctionalUnits         = 4; // Applies to everything except branch units
-        public int numRenamingTableEntries    = 10;
-        public int numReaderBufferEntries     = 10;
+        public static int superScalerFactor          = 5;
+        public static int numReservationStations     = 10;
+        public static int numFunctionalUnits         = 4; // Applies to everything except branch units
+        public static int numRenamingTableEntries    = 10;
+        public static int numReaderBufferEntries     = 10;
 
     }
 }
