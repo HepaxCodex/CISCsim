@@ -11,8 +11,8 @@ namespace CISCsim
         {
             System.Console.WriteLine("Hello World\n");
 
-            BenTest.RunTest();
-            //AndrewTest.RunTest();
+            //BenTest.RunTest();
+            AndrewTest.RunTest();
 
             System.Console.WriteLine("Press Any Key To Exit\n");
             System.Console.Read();

@@ -3,20 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Collections;
-
 namespace CISCsim
 {
     class DecodeStage
     {
-
+        /// <summary>
+        /// 
+        /// </summary>
         private Queue<Instruction> decodeBuffer;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DecodeStage()
         {
             decodeBuffer = new Queue<Instruction>();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public void runCycle()
+        {
+
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public int getEmptySlots()
         {
             if (Config.superScalerFactor - this.decodeBuffer.Count < 0)
@@ -26,6 +42,11 @@ namespace CISCsim
             return Config.superScalerFactor - this.decodeBuffer.Count;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="instr"></param>
+        /// <returns></returns>
         public bool addInstructionToBuffer(Instruction instr)
         {
             if (Config.superScalerFactor - this.decodeBuffer.Count > 0)
@@ -40,6 +61,9 @@ namespace CISCsim
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void testRemoveInstruction()
         {
             this.decodeBuffer.Dequeue();

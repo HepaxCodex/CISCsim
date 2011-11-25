@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
+
 namespace CISCsim
 {
     /// <summary>
@@ -19,12 +20,14 @@ namespace CISCsim
         /// <summary>
         /// Holds the instructions fetched from the instruction trace
         /// </summary>
-        private Instruction[] fetchBuffer;
+        //private Instruction[] fetchBuffer;
+        private Queue<Instruction> fetchBuffer;
+
 
         /// <summary>
         /// Array that tells which slots in the fetchBuffer are in use
         /// </summary>
-        private BitArray fetchBufferIndexValid;
+        //private BitArray fetchBufferIndexValid;
 
         /// <summary>
         /// Holds the superscalar width used in construction
@@ -59,8 +62,10 @@ namespace CISCsim
             this.cacheMissed = false;
             this.cacheMissCountdown = 0;
             this.ssw = superScalarWidth;
-            this.fetchBuffer = new Instruction[superScalarWidth];
-            this.fetchBufferIndexValid = new BitArray(superScalarWidth);
+            //this.fetchBuffer = new Instruction[superScalarWidth];
+            this.fetchBuffer = new Queue<Instruction>();
+
+            //this.fetchBufferIndexValid = new BitArray(superScalarWidth);
             try
             {
                 this.traceReader = new StreamReader(instructionTraceFilename);
@@ -108,18 +113,7 @@ namespace CISCsim
                 }
             }
 
-            openSlotIndices = new int[this.fetchBufferIndexValid.Count];
-
-            // Check to see how many open slots there are
-            // and keep track of which ones are open
-            for(int i = 0; i < this.fetchBufferIndexValid.Count; i++)
-            {
-                if (this.fetchBufferIndexValid[i] == false)
-                {
-                    openSlotIndices[numSlotsOpen] = i;
-                    numSlotsOpen++;
-                }
-            }
+            numSlotsOpen = Config.superScalerFactor - this.fetchBuffer.Count;
             
             // Read in numSlotsOpen instructions from the trace file.
             for(int i = 0; i < numSlotsOpen; i++)
@@ -129,7 +123,7 @@ namespace CISCsim
                 {
                     numInstructionsRead++;
 
-                    fetchBuffer[openSlotIndices[i]] = new Instruction(line);
+                    fetchBuffer.Enqueue(new Instruction(line));
                 }
                 else
                 {
@@ -143,12 +137,28 @@ namespace CISCsim
             return numInstructionsRead;
         } //end Fetch()
 
+
+        /// <summary>
+        /// Empties out the Fetch Queue
+        /// </summary>
         public void Clear()
         {
-            for (int i = 0; i < this.ssw; i++)
+            while (fetchBuffer.Count > 0)
             {
-                this.fetchBufferIndexValid[i] = false;
+                fetchBuffer.Dequeue();
             }
         }
+
+        public bool isEmpty()
+        {
+            return (this.fetchBuffer.Count == 0);
+        }
+
+        public Instruction getInstruction()
+        {
+
+            return this.fetchBuffer.Dequeue();
+        }
+
     }
 }
