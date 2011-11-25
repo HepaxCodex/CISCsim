@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AndrewTest.cs" />
+    <Compile Include="ArchRegFile.cs" />
+    <Compile Include="ArfEntry.cs" />
     <Compile Include="BenTest.cs" />
     <Compile Include="BranchPredictionSM.cs" />
     <Compile Include="Config.cs" />
