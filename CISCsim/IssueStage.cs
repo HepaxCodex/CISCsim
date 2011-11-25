@@ -7,11 +7,11 @@ namespace CISCsim
 {
     class IssueStage
     {
-        public ReservationStation integerStage;
-        public ReservationStation fpStage;
-        public ReservationStation memStage;
-        public ReservationStation multDivStage;
-        public ReservationStation branchStage;
+        public ReservationStation integerStation;
+        public ReservationStation fpStation;
+        public ReservationStation memStation;
+        public ReservationStation multDivStation;
+        public ReservationStation branchStation;
 
     }
 }
