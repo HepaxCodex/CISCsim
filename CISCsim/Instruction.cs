@@ -35,10 +35,18 @@ namespace CISCsim
         /// </summary>
         public ExecutionType executionType;
 
+        /// <summary>
+        /// DO NOT USE! Default Constructor
+        /// </summary>
         public Instruction()
         {
         }
 
+
+        /// <summary>
+        /// Prefered Constructor
+        /// </summary>
+        /// <param name="traceLine">The Line in the trace file containing the instruction</param>
         public Instruction(string traceLine)
         {
             string[] tokens = traceLine.Split(' ');
@@ -47,7 +55,10 @@ namespace CISCsim
             this.instruction = tokens[1];
 
             this.executionType = getExecutionType(tokens[1]);
-            this.setArguments(tokens[2]);
+            
+            // Nop instructions have no arguments
+            if (this.executionType != ExecutionType.Nop)
+                this.setArguments(tokens[2]);
 
 
         }
@@ -165,10 +176,43 @@ namespace CISCsim
 
         }
 
-
+        /// <summary>
+        /// This takes arguments like "r1,r2,r3" or "1234" or "r1,133" or "r1,r2(100)" and parses them
+        /// </summary>
+        /// <param name="args">an instruction argument string like "r1,r2,r3" or "1234" or "r1,133" or "r1,r2(100)"</param>
         private void setArguments(string args)
         {
-
+            string[] tokens = args.Split(',');
+            switch (tokens.Length)
+            {
+                case 1: // We only have on argument, often this is a jump command
+                    this.dest = tokens[0];
+                    break;
+                case 2:
+                    if (tokens[2].Contains('(')) // Actually has 3 arguments but in r1,10(r3) form
+                    {
+                        string[] lastargs = tokens[2].Split(new char[] { '(', ')' });
+                        this.dest = tokens[0];
+                        this.source1 = lastargs[0];
+                        this.source2 = lastargs[1];
+                    }
+                    else
+                    {
+                        this.dest = tokens[0];
+                        this.source1 = tokens[1];
+                    }
+                    break;
+                case 3:
+                    this.dest = tokens[0];
+                    this.source1 = tokens[1];
+                    this.source2 = tokens[2];
+                    break;
+                default:
+                    System.Console.WriteLine("ERROR: Unknown instruction argument format found: \"{0}\"", args);
+                    System.Console.WriteLine("       leaving everything unitialized");
+                    System.Console.WriteLine("       ... press any key to continue ... ");
+                    break;
+            }
         }
 
 
