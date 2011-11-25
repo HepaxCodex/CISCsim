@@ -9,7 +9,7 @@ namespace CISCsim
     {
         public static void RunTest()
         {
-            Instruction foo = new Instruction("4204312 addiu r9,r9,-1");
+            FetchStage testFetch = new FetchStage(4, "..\\..\\InputFiles\\fpppp.tra");
         }
 
     }
