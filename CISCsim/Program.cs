@@ -13,9 +13,6 @@ namespace CISCsim
 
             BenTest.RunTest();
             AndrewTest.RunTest();
-            
-
-
 
             System.Console.WriteLine("Press Any Key To Exit\n");
             System.Console.Read();

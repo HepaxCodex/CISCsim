@@ -11,8 +11,11 @@ namespace CISCsim
     static class BenTest
     {
 
-        public static void RunTest(){
+        public static void RunTest()
+        {
+            FetchStage testFetch = new FetchStage(4, "..\\..\\InputFiles\\fpppp.tra");
 
+            testFetch.Fetch();
         }
     }
 }
