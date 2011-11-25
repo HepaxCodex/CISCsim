@@ -43,12 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndrewTest.cs" />
+    <Compile Include="BenTest.cs" />
     <Compile Include="BranchPredictionSM.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="GShareBranchPredictor.cs" />
     <Compile Include="Instruction.cs" />
-    <Compile Include="InstructionParser.cs" />
+    <Compile Include="IssueStage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReservationStation.cs" />
+    <Compile Include="ReservationStationEntry.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
