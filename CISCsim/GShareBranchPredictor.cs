@@ -8,6 +8,7 @@ namespace CISCsim
     // TODO: What happens when the BTB runs out of room?
     // TODO: For now the BTB is left as variable size (grows/shrinks automatically)
     // TODO: Decide if the BTB tabe is necessary (it was required by the spec, but not required by G-Share Branch Predction
+    // TODO: Add the UPDATE code to GShareBranchPredictor
 
     /// <summary>
     /// A Global Share Branch Predictor for Super Scaler CPUs
@@ -34,7 +35,7 @@ namespace CISCsim
         /// <summary>
         /// Represents the Path History to the current branch
         /// </summary>
-        private byte branchHistoryShiftReg);
+        private byte branchHistoryShiftReg;
 
         /// <summary>
         /// Contains the Branch Target relationships
