@@ -48,6 +48,7 @@
     <Compile Include="ArfEntry.cs" />
     <Compile Include="BenTest.cs" />
     <Compile Include="BranchPredictionSM.cs" />
+    <Compile Include="CycleCleanup.cs" />
     <Compile Include="DecodeStage.cs" />
     <Compile Include="FetchStage.cs" />
     <Compile Include="Config.cs" />

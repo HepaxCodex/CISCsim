@@ -19,5 +19,24 @@ namespace CISCsim
         }
 
 
+        /// <summary>
+        /// runCycle Prototype ... Not COmpelte
+        /// </summary>
+        public static void runCycle()
+        {
+            //fetchStage.Fetch //TODO: THis should be fetchStage.RunCycle();
+            //decodeStage.RunCycle();
+            //issueStage.RunCycle();
+            //executeStage.RunCycle();
+            //completeStage.RunCycle();
+            //writeBageStage.RunCycle();
+
+            // CycleCleanup.fetch2decode();
+            // CycleCleanup.decode2issue();
+            // CycleCleanup.issue2execute();
+
+        }
+
+
     }
 }

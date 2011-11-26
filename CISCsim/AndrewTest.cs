@@ -13,57 +13,18 @@ namespace CISCsim
             DecodeStage testDecode = new DecodeStage();
 
             testFetch.Fetch();
+            CycleCleanup.fetch2Decode(testFetch,testDecode);
 
-            while (testDecode.getEmptySlots() > 0 && !testFetch.isEmpty())
-            {
-                testDecode.addInstructionToBuffer(testFetch.getInstruction());
-            }
+            
+            
 
-            System.Console.WriteLine(testDecode.getEmptySlots());
-
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-
-            System.Console.WriteLine(testDecode.getEmptySlots());
-
-            testFetch.Fetch();
-
-            while (testDecode.getEmptySlots() > 0 && !testFetch.isEmpty())
-            {
-                testDecode.addInstructionToBuffer(testFetch.getInstruction());
-            }
-
-            System.Console.WriteLine(testDecode.getEmptySlots());
-
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-
-            System.Console.WriteLine(testDecode.getEmptySlots());
-
-            testFetch.Fetch();
-
-            while (testDecode.getEmptySlots() > 0 && !testFetch.isEmpty())
-            {
-                testDecode.addInstructionToBuffer(testFetch.getInstruction());
-            }
-
-            System.Console.WriteLine(testDecode.getEmptySlots());
-
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-            testDecode.testRemoveInstruction();
-
-            System.Console.WriteLine(testDecode.getEmptySlots());
-
-            testFetch.Fetch();
-
-            System.Console.WriteLine(testDecode.getEmptySlots());
 
         }
+
+
+
+
+
 
     }
 }
