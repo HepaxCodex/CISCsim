@@ -12,7 +12,7 @@ namespace CISCsim
     {
         public static void RunTest()
         {
-            FetchStage testFetchStage = new FetchStage(4, "..\\..\\InputFiles\\fpppp.tra");
+            FetchStage testFetchStage = new FetchStage("..\\..\\InputFiles\\fpppp.tra");
             
             for (int i = 0; i < 200; i++)
             {

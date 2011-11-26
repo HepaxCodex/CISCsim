@@ -30,11 +30,6 @@ namespace CISCsim
         //private BitArray fetchBufferIndexValid;
 
         /// <summary>
-        /// Holds the superscalar width used in construction
-        /// </summary>
-        private int ssw;
-
-        /// <summary>
         /// Holds the stream reader used to read from the instruction trace file
         /// </summary>
         private StreamReader traceReader;
@@ -57,12 +52,10 @@ namespace CISCsim
         /// Creates a new FetchStage with a fetchBuffer of superScalarWidth width.
         /// 
         /// </summary>
-        public FetchStage(int superScalarWidth, string instructionTraceFilename)
+        public FetchStage(string instructionTraceFilename)
         {
             this.cacheMissed = false;
             this.cacheMissCountdown = 0;
-            this.ssw = superScalarWidth;
-            //this.fetchBuffer = new Instruction[superScalarWidth];
             this.fetchBuffer = new Queue<Instruction>();
 
             //this.fetchBufferIndexValid = new BitArray(superScalarWidth);
@@ -85,20 +78,28 @@ namespace CISCsim
         {
             int numInstructionsRead = 0;
             int numSlotsOpen = 0;
-            int[] openSlotIndices;
             String line;
             Random rand = new Random();
 
             if (this.cacheMissed == false)
             {
                 // We didn't miss the cache last time, so we have to see if we miss this time
-                // TODO: Fix cache miss check so that we can use a setting to change % miss
-                if (rand.Next(100) == 0)
+                if (rand.Next(100) < Config.level1CacheMissPercent)
                 {
+                    Statistics.level1CacheMisses++;
+
                     //We did miss cache; set cacheMiss = true and the appropriate cacheMissCountdown
                     this.cacheMissed = true;
-                    // TODO: Fix cache miss countdown to use a setting for cycles to access
-                    this.cacheMissCountdown = 5;
+                    this.cacheMissCountdown = Config.level1CacheMissPenalty;
+
+                    //Check for Level 2 Cache miss
+                    if (rand.Next(100) < Config.level2CacheMissPercent)
+                    {
+                        Statistics.level2CacheMisses++;
+
+                        //Update cache miss countdown to be main memory access
+                        this.cacheMissCountdown = Config.level2CacheMissPenalty;
+                    }
                     return 0;
                 }
             }
@@ -156,7 +157,6 @@ namespace CISCsim
 
         public Instruction getInstruction()
         {
-
             return this.fetchBuffer.Dequeue();
         }
 

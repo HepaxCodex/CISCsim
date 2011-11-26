@@ -20,11 +20,11 @@ namespace CISCsim
 
 
         /// <summary>
-        /// runCycle Prototype ... Not COmpelte
+        /// runCycle Prototype ... Not Complete
         /// </summary>
         public static void runCycle()
         {
-            //fetchStage.Fetch //TODO: THis should be fetchStage.RunCycle();
+            //fetchStage.Fetch(); //TODO: This should be fetchStage.RunCycle();
             //decodeStage.RunCycle();
             //issueStage.RunCycle();
             //executeStage.RunCycle();
