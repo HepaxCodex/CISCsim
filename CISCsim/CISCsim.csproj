@@ -51,6 +51,7 @@
     <Compile Include="CPU.cs" />
     <Compile Include="CycleCleanup.cs" />
     <Compile Include="DecodeStage.cs" />
+    <Compile Include="DispatchStage.cs" />
     <Compile Include="FetchStage.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="GShareBranchPredictor.cs" />
