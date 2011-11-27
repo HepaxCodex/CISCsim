@@ -7,13 +7,24 @@ namespace CISCsim
 {
     class ReorderBuffer
     {
-        private RobEntry[] buffer;
+        private Queue<RobEntry> buffer;
 
         public ReorderBuffer()
         {
-            //buffer = new RobEntry[Config.];
-            //for(int i = 0; 
+            buffer = new Queue<RobEntry>();
         }
+
+
+        /// <summary>
+        /// Checks to see if the ROB is full or not
+        /// </summary>
+        /// <returns>true if full, false otherwise</returns>
+        public bool isFull()
+        {
+            return (Config.numReorderBufferEntries - this.buffer.Count >0 );
+        }
+
+
 
     }
 }
