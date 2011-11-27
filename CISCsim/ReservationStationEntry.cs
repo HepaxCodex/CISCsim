@@ -12,7 +12,7 @@ namespace CISCsim
         /// </summary>
         public bool busy;
 
-        /// <summary>
+        /// <psummary>
         /// operand 1
         /// </summary>
         public int op1;

@@ -14,7 +14,7 @@ namespace CISCsim
         public static int numReservationStations     = 10;
         public static int numFunctionalUnits         = 4; // Applies to everything except branch units
         public static int numRenamingTableEntries    = 10;
-        public static int numReaderBufferEntries     = 10;
+        public static int numReorderBufferEntries     = 10;
 
         public static int level1CacheMissPercent     = 1;
         public static int level2CacheMissPercent     = 20;

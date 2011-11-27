@@ -10,16 +10,18 @@ namespace CISCsim
     /// </summary>
     class ReservationStation
     {
-        public ReservationStationEntry[] buffer;
+        //TODO: Add Entries to the REservation Station
+        private int maxQueueSize;
+
+        public Queue<ReservationStationEntry> buffer;
 
         /// <summary>
         /// Default Constructor: Creates a ReservationStation in the size defined by the Config
         /// </summary>
         public ReservationStation()
         {
-            this.buffer = new ReservationStationEntry[Config.numReservationStations];
-            for (int i = 0; i < Config.numReservationStations; i++)
-                this.buffer[i] = new ReservationStationEntry();
+            this.buffer = new Queue<ReservationStationEntry>();
+            this.maxQueueSize = Config.numReservationStations;
         }
 
         /// <summary>
@@ -28,9 +30,7 @@ namespace CISCsim
         /// <param name="numReservationStations">Desired number of Entries</param>
         public ReservationStation(int numReservationStations)
         {
-            this.buffer = new ReservationStationEntry[numReservationStations];
-            for (int i = 0; i < numReservationStations; i++)
-                this.buffer[i] = new ReservationStationEntry();
+            this.maxQueueSize = numReservationStations;
         }
 
         /// <summary>
@@ -39,6 +39,9 @@ namespace CISCsim
         /// <returns>True if full, false otherwise</returns>
         public bool isFull()
         {
+            return (this.maxQueueSize - this.buffer.Count > 0);
+
+            /*This method is technically correct but unnecessary in the implimentation
             bool full = true; // Start off true until we find a non-"busy" entry
             foreach (ReservationStationEntry entry in this.buffer)
             {
@@ -47,7 +50,9 @@ namespace CISCsim
                     full = false;
                 }
             }
+             
             return full;
+             * */
         }
 
 
