@@ -5,8 +5,10 @@ using System.Text;
 
 namespace CISCsim
 {
+    [Obsolete("Do not use Shadow Buffers, Run Each stage backwards", true)]
     static class CycleCleanup
     {
+        /*
 
         /// <summary>
         /// Moves instructions from the fetch Stage buffer  to the decode Stage buffer
@@ -20,6 +22,8 @@ namespace CISCsim
                 decodeStage.addInstructionToBuffer(fetchStage.getInstruction());
             }
         }
+         * 
+         * */
 
 
     }

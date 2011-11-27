@@ -17,7 +17,20 @@ namespace CISCsim
         /// </summary>
         public ReservationStation()
         {
-            buffer = new ReservationStationEntry[Config.numReservationStations];
+            this.buffer = new ReservationStationEntry[Config.numReservationStations];
+            for (int i = 0; i < Config.numReservationStations; i++)
+                this.buffer[i] = new ReservationStationEntry();
+        }
+
+        /// <summary>
+        /// This Constructor is used to specify a number of Entries
+        /// </summary>
+        /// <param name="numReservationStations">Desired number of Entries</param>
+        public ReservationStation(int numReservationStations)
+        {
+            this.buffer = new ReservationStationEntry[numReservationStations];
+            for (int i = 0; i < numReservationStations; i++)
+                this.buffer[i] = new ReservationStationEntry();
         }
 
         /// <summary>
@@ -27,7 +40,7 @@ namespace CISCsim
         public bool isFull()
         {
             bool full = true; // Start off true until we find a non-"busy" entry
-            foreach (ReservationStationEntry entry in buffer)
+            foreach (ReservationStationEntry entry in this.buffer)
             {
                 if (entry.busy == false)
                 {

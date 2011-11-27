@@ -9,11 +9,53 @@ namespace CISCsim
     {
         public static void RunTest()
         {
-            FetchStage testFetch = new FetchStage("..\\..\\InputFiles\\fpppp.tra");
-            DecodeStage testDecode = new DecodeStage();
+            DecodeStage decodeStage = new DecodeStage();
+            FetchStage fetchStage = new FetchStage("..\\..\\InputFiles\\fpppp.tra");
+            IssueStage issueStage = new IssueStage();
+            RenameRegisterFile rrf = new RenameRegisterFile();
 
-            testFetch.Fetch();
-            CycleCleanup.fetch2Decode(testFetch,testDecode);
+            // First Cycle
+            decodeStage.runCycle(fetchStage, issueStage, rrf);
+            fetchStage.Fetch();
+            
+
+            // Second Cycle
+            decodeStage.runCycle(fetchStage, issueStage, rrf);
+
+
+            /*
+            testDecode.testRemoveInstruction(); //
+            testDecode.testRemoveInstruction(); // Represents Decode.RunTest
+            testDecode.testRemoveInstruction(); //
+
+            
+            fetchStage.Fetch();
+            //CycleCleanup.fetch2Decode(testFetch, testDecode);
+
+            testDecode.testRemoveInstruction(); // Represents Decode.RunTest
+            testDecode.testRemoveInstruction(); //
+
+            
+            fetchStage.Fetch();
+            //CycleCleanup.fetch2Decode(testFetch, testDecode);
+
+            testDecode.testRemoveInstruction(); //
+
+            
+            fetchStage.Fetch();
+            //CycleCleanup.fetch2Decode(testFetch, testDecode);
+
+            testDecode.testRemoveInstruction(); //
+            testDecode.testRemoveInstruction(); // Represents Decode.RunTest
+            testDecode.testRemoveInstruction(); //
+
+            
+            fetchStage.Fetch();
+            //CycleCleanup.fetch2Decode(testFetch, testDecode);
+             * */
+
+
+            
 
             
             

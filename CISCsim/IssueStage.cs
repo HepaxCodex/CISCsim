@@ -13,5 +13,18 @@ namespace CISCsim
         public ReservationStation multDivStation;
         public ReservationStation branchStation;
 
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public IssueStage()
+        {
+            this.integerStation = new ReservationStation();
+            this.fpStation = new ReservationStation();
+            this.memStation = new ReservationStation(); // Per the Specification
+            this.multDivStation = new ReservationStation();
+            this.branchStation = new ReservationStation(1);
+        }
+
     }
 }

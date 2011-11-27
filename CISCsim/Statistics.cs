@@ -14,5 +14,8 @@ namespace CISCsim
         public static int level1CacheMisses      = 0;
         public static int level2CacheMisses      = 0;
         public static int instructionsExecuted   = 0;
+
+        public static int registerRenameFileFull = 0;
+        public static int reservationStationFull = 0;
     }
 }
