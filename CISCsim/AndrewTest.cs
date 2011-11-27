@@ -9,7 +9,7 @@ namespace CISCsim
     {
         public static void RunTest()
         {
-            FetchStage testFetch = new FetchStage(4, "..\\..\\InputFiles\\fpppp.tra");
+            FetchStage testFetch = new FetchStage("..\\..\\InputFiles\\fpppp.tra");
             DecodeStage testDecode = new DecodeStage();
 
             testFetch.Fetch();

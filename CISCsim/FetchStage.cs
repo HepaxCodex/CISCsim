@@ -23,12 +23,6 @@ namespace CISCsim
         //private Instruction[] fetchBuffer;
         private Queue<Instruction> fetchBuffer;
 
-
-        /// <summary>
-        /// Array that tells which slots in the fetchBuffer are in use
-        /// </summary>
-        //private BitArray fetchBufferIndexValid;
-
         /// <summary>
         /// Holds the stream reader used to read from the instruction trace file
         /// </summary>
