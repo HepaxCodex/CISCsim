@@ -10,6 +10,8 @@ namespace CISCsim
     /// </summary>
     static class Config
     {
+        public static string traceFilename           = "..\\..\\InputFiles\\fpppp.tra";
+
         public static int superScalerFactor          = 5;
         public static int numReservationStations     = 10;
         public static int numFunctionalUnits         = 4; // Applies to everything except branch units

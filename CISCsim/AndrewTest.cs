@@ -10,7 +10,7 @@ namespace CISCsim
         public static void RunTest()
         {
             DecodeStage decodeStage = new DecodeStage();
-            FetchStage fetchStage = new FetchStage("..\\..\\InputFiles\\fpppp.tra");
+            FetchStage fetchStage = new FetchStage(Config.traceFilename);
             IssueStage issueStage = new IssueStage();
             RenameRegisterFile rrf = new RenameRegisterFile();
 
