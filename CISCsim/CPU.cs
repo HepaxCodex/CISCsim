@@ -29,8 +29,11 @@ namespace CISCsim
         /// </summary>
         public static ReorderBuffer rob = new ReorderBuffer();
 
-
+        /// <summary>
+        /// The CPU's architecture register file
+        /// </summary>
         public static GShareBranchPredictor branchPredictor = new GShareBranchPredictor();
+        public static ArchRegFile arf = new ArchRegFile();
 
         // TODO: figure out if we want all the stages in here? Seems like it would
         // make sense to have this static CPU that you call CPU.fetchStage.runCycle(), etc.

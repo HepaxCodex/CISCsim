@@ -60,6 +60,7 @@ namespace CISCsim
         /// <summary>
         /// Puts the instruction into the reorder buffer
         /// </summary>
+        ///  <returns>The tag of the entry used in the reorder buffer</returns>
         private int dispatchToReorderBuffer(Instruction instr)
         {
             // TODO: implement this function

@@ -65,6 +65,12 @@ namespace CISCsim
             // Else ARF entry Busy = true, take ARF tag to check RRF entry.
             // If RRF entry valid = true, data is valid, put it in as opN, set validN true
             // Else RRF entry valid = false, opN gets the RRF entry tag, set validN false
+            int src1 = instr.source1;
+            int src2 = instr.source2;
+
+            //instr.executionType.
+
+            //CPU.arf.regFile
         }
     }
 }
