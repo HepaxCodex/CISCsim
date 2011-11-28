@@ -30,11 +30,15 @@ namespace CISCsim
         /// </summary>
         public bool source1Imm;
         public bool source2Imm;
+        public bool source3Imm;
 
         public int source1;
         public string source1String;
         public int source2;
         public string source2String;
+        //store instructions have 3 sources
+        public int source3;
+        public string source3String;
 
         public int dest;
         public string destString;
@@ -59,10 +63,6 @@ namespace CISCsim
         public Instruction(string traceLine)
         {
             string[] tokens = traceLine.Split(' ');
-
-            //initialize immediates to false - these are updated in setArguments
-            this.source1Imm = false;
-            this.source2Imm = false;
             
             this.address = int.Parse(tokens[0]);
             this.instruction = tokens[1];
@@ -198,41 +198,173 @@ namespace CISCsim
             string[] tokens = args.Split(',');
             switch (tokens.Length)
             {
-                case 1: // We only have on argument, often this is a jump command
-                    this.dest = getIntFromRegisterString(tokens[0]);
+                case 1:
+                    #region One-argument instructions
+                    switch(this.instruction)
+                    {
+                        case "bc1f":
+                        case "bc1t":
+                            //source1 is the immediate provided
+                            this.source1 = getIntFromRegisterString(tokens[0]);
+                            this.source1String = tokens[0];
+                            this.source1Imm = true;
+                            //source2 is FCC
+                            this.source2 = 64;
+                            this.source2String = "fcc";
+                            this.source2Imm = false;
+                            break;
+                        case "mfhi":
+                        case "mflo":
+                            //source1 is hi_lo
+                            this.source1 = 63;
+                            this.source1String = "hi_lo";
+                            this.source1Imm = false;
+                            //dest is the given reg
+                            this.dest = getIntFromRegisterString(tokens[0]);
+                            this.destString = tokens[0];
+                            break;
+                        default:
+                            //all the other 1-arg instrs a reg or immediate as source w/out dests
+                            this.source1 = getIntFromRegisterString(tokens[0]);
+                            this.source1String = tokens[0];
+                            this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                            break;
+                    }
                     break;
+                    #endregion
                 case 2:
                     if (tokens[1].Contains('(')) // Actually has 3 arguments but in r1,10(r3) form
                     {
+                        #region Three-argument instructions that are in the form X,Y(Z)
                         string[] lastargs = tokens[1].Split(new char[] { '(', ')' });
-                        this.dest = getIntFromRegisterString(tokens[0]);
-                        this.destString = tokens[0];
-                        this.source1 = getIntFromRegisterString(lastargs[0]);
-                        this.source1String = lastargs[0];
-                        this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
-                        this.source2 = getIntFromRegisterString(lastargs[1]);
-                        this.source2String = lastargs[1];
-                        this.source2Imm = !(this.source2String.StartsWith("r") || this.source2String.StartsWith("f"));
+
+                        switch (this.instruction)
+                        {
+                            case "sb":
+                            case "sh":
+                            case "sw":
+                            case "s.s":
+                            case "s.d":
+                                //store words have 3 sources
+                                this.source1 = getIntFromRegisterString(tokens[0]);
+                                this.source1String = tokens[0];
+                                this.source1Imm = false;
+                                this.source2 = getIntFromRegisterString(lastargs[0]);
+                                this.source2String = lastargs[0];
+                                this.source2Imm = true;
+                                this.source3 = getIntFromRegisterString(lastargs[1]);
+                                this.source3String = lastargs[1];
+                                this.source3Imm = false;
+                                break;
+                            default:
+                                //the default is normal: dest,src1(src2)
+                                this.dest = getIntFromRegisterString(tokens[0]);
+                                this.destString = tokens[0];
+                                this.source1 = getIntFromRegisterString(lastargs[0]);
+                                this.source1String = lastargs[0];
+                                this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                                this.source2 = getIntFromRegisterString(lastargs[1]);
+                                this.source2String = lastargs[1];
+                                this.source2Imm = !(this.source2String.StartsWith("r") || this.source2String.StartsWith("f"));
+                                break;
+                        }
+                        #endregion
                     }
                     else
                     {
-                        this.dest = getIntFromRegisterString(tokens[0]);
-                        this.destString = tokens[0];
-                        this.source1 = getIntFromRegisterString(tokens[1]);
-                        this.source1String = tokens[1];
-                        this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                        #region Two-argument instructions
+                        switch (this.instruction)
+                        {
+                            case "blez":
+                            case "bgtz":
+                            case "bltz":
+                            case "bgez":
+                                //source1 is the register, source2 is the immediate
+                                this.source1 = getIntFromRegisterString(tokens[0]);
+                                this.source1String = tokens[0];
+                                this.source1Imm = false;
+                                this.source2 = getIntFromRegisterString(tokens[1]);
+                                this.source2String = tokens[1];
+                                this.source2Imm = true;
+                                break;
+                            case "mult":
+                            case "div":
+                            case "divu":
+                                //dest is hi_log, source1 is first reg, source2 is second reg
+                                this.dest = 63;
+                                this.destString = "hi_lo";
+                                this.source1 = getIntFromRegisterString(tokens[0]);
+                                this.source1String = tokens[0];
+                                this.source1Imm = false;
+                                this.source2 = getIntFromRegisterString(tokens[1]);
+                                this.source2String = tokens[1];
+                                this.source2Imm = false;
+                                break;
+                            case "mtc1":
+                            case "dmtc1":
+                                //dest is floating point reg provide in tokens[1], source1 is the reg provided
+                                this.dest = getIntFromRegisterString(tokens[1]);
+                                this.destString = tokens[1];
+                                this.source1 = getIntFromRegisterString(tokens[0]);
+                                this.source1String = tokens[0];
+                                this.source1Imm = false;
+                                break;
+                            case "c.eq.d":
+                            case "c.lt.d":
+                            case "c.le.d":
+                                //dest is fcc, source1 is f reg1, source2 is f reg2
+                                this.dest = 64;
+                                this.destString = "fcc";
+                                this.source1 = getIntFromRegisterString(tokens[0]);
+                                this.source1String = tokens[0];
+                                this.source1Imm = false;
+                                this.source2 = getIntFromRegisterString(tokens[1]);
+                                this.source2String = tokens[1];
+                                this.source2Imm = false;
+                                break;
+                            default:
+                                //default case is the normal kind: instr dst,src
+                                this.dest = getIntFromRegisterString(tokens[0]);
+                                this.destString = tokens[0];
+                                this.source1 = getIntFromRegisterString(tokens[1]);
+                                this.source1String = tokens[1];
+                                this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                                break;
+                        }
+                        #endregion
                     }
                     break;
                 case 3:
-                    this.dest = getIntFromRegisterString(tokens[0]);
-                    this.destString = tokens[0];
-                    this.source1 = getIntFromRegisterString(tokens[1]);
-                    this.source1String = tokens[1];
-                    this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
-                    this.source2 = getIntFromRegisterString(tokens[2]);
-                    this.source2String = tokens[2];
-                    this.source2Imm = !(this.source2String.StartsWith("r") || this.source2String.StartsWith("f"));
+                    #region Three-argument instructions in the form X,Y,Z
+                    switch (this.instruction)
+                    {
+                        case "beq":
+                        case "bne":
+                            //these branches have 3 sources
+                            this.source1 = getIntFromRegisterString(tokens[0]);
+                            this.source1String = tokens[0];
+                            this.source1Imm = false;
+                            this.source2 = getIntFromRegisterString(tokens[1]);
+                            this.source2String = tokens[1];
+                            this.source2Imm = false;
+                            this.source3 = getIntFromRegisterString(tokens[2]);
+                            this.source3String = tokens[2];
+                            this.source3Imm = true;
+                            break;
+                        default:
+                            //the default is the norm: dst,src1,src2
+                            this.dest = getIntFromRegisterString(tokens[0]);
+                            this.destString = tokens[0];
+                            this.source1 = getIntFromRegisterString(tokens[1]);
+                            this.source1String = tokens[1];
+                            this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                            this.source2 = getIntFromRegisterString(tokens[2]);
+                            this.source2String = tokens[2];
+                            this.source2Imm = !(this.source2String.StartsWith("r") || this.source2String.StartsWith("f"));
+                            break;
+                    }
                     break;
+                    #endregion
                 default:
                     System.Console.WriteLine("ERROR: Unknown instruction argument format found: \"{0}\"", args);
                     System.Console.WriteLine("       leaving everything unitialized");
@@ -242,9 +374,8 @@ namespace CISCsim
         }
 
         /// <summary>
-        /// This takes arguments like "rX" or "fX" and retrieves the X as an int
+        /// This takes arguments like "rX" or "fX" or "X" and retrieves the X as an int
         /// </summary>
-        // TODO: Finish putting the correct source or dest for instructions that use FCC and HILO
         private int getIntFromRegisterString(string regString)
         {
             int regValue;
@@ -258,7 +389,6 @@ namespace CISCsim
             }
             else
             {
-                //Immediate value?
                 regValue = Convert.ToInt32(regString);
             }
             return regValue;
