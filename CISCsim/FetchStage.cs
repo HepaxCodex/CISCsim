@@ -18,6 +18,13 @@ namespace CISCsim
         // which ones can move and update fetchBufferIndexValid appropriately
 
         /// <summary>
+        /// Notes that a branch was mispredicted
+        /// 
+        /// Fetch Stage will wait until the branch is executed before continueing
+        /// </summary>
+        bool branchMispredictWait = false;
+
+        /// <summary>
         /// Holds the instructions fetched from the instruction trace
         /// </summary>
         //private Instruction[] fetchBuffer;
@@ -86,8 +93,8 @@ namespace CISCsim
                     {
                         Statistics.level2CacheMisses++;
 
-                        //Update cache miss countdown to be main memory access
-                        this.cacheMissCountdown = Config.level2CacheMissPenalty;
+                        //Update cache miss countdown to be main memory access plus the L2 access
+                        this.cacheMissCountdown += Config.level2CacheMissPenalty;
                     }
                     return 0;
                 }
@@ -147,6 +154,34 @@ namespace CISCsim
         public Instruction getInstruction()
         {
             return this.fetchBuffer.Dequeue();
+        }
+
+        /// <summary>
+        /// Checks to see if there is a branch mispredict
+        /// </summary>
+        /// <returns>true if there is was mispredict</returns>
+        public bool isBranchMispredict()
+        {
+            Instruction instr = this.fetchBuffer.Peek();
+
+            bool branchPrediction = CPU.branchPredictor.predictBranch(instr.address);
+            bool actualResult;
+            Instruction next =  this.fetchBuffer.First(entry => entry != instr);
+
+            // if next pc == first pc +8 , branch not taken
+            if (next.address == instr.address + 8)
+            {
+                actualResult = false;
+            }
+            else
+            {
+                actualResult = true;
+            }
+
+            CPU.branchPredictor.updateBranchSM(instr.address, branchPrediction, actualResult);
+
+            return (branchPrediction == actualResult);
+            
         }
 
     }

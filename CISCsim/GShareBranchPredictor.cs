@@ -41,7 +41,7 @@ namespace CISCsim
         /// Contains the Branch Target relationships
         /// The calling PC is the Key and the branch Target is the Value
         /// </summary>
-        private Dictionary<int, int> branchTargetBuffer;
+        private List<int> branchTargetBuffer;
 
 
         private BranchPredictionSM[] branchPredictorTable = new BranchPredictionSM[512];
@@ -59,28 +59,12 @@ namespace CISCsim
         public GShareBranchPredictor()
         {
             // numBtbEntries = 64;  // Only needed if we want a fixed size BTB
-            branchTargetBuffer = new Dictionary<int, int>();
+            branchTargetBuffer = new List<int>();
 
             // Initialize the branch predictor table
             branchPredictorTable.Initialize();
         }
 
-
-
-        /// <summary>
-        /// Prefered Constructor
-        /// Initializes the branch Target Buffer to _numBrbEntries 
-        /// (This is Configurable in the specification)
-        /// </summary>
-        /// <param name="_numBtbEntries">Number of desired entries in the Branch Target Buffer (config by spec) </param>
-        public GShareBranchPredictor(int _numBtbEntries)
-        {
-            // Create the branch Target Buffer Dictionary
-            branchTargetBuffer = new Dictionary<int, int>();
-
-            // Initialize the Branch Prediction table
-            branchPredictorTable.Initialize();
-        }
 
 
         // NOTES from specification:
@@ -89,19 +73,23 @@ namespace CISCsim
 
         /// <summary>
         /// Determines if the branch found at the current PC should be predicted as taken or not
+        /// 
+        /// Note that this just uses Current PC because of impelementation technicalities.
+        /// It is impossible to know the exact target address in many circumstances so it is of no use.
         /// </summary>
         /// <param name="_currentPC">current PC address (where the branch is found)</param>
         /// <param name="branchTarget">The Target address of the branch</param>
         /// <returns>True if the branch is predicted as taken, false otherwise</returns>
-        public bool predictBranch(int _currentPC, int _branchTarget)
+        public bool predictBranch(int _currentPC)//, int _branchTarget)
         {
+            Statistics.totalBranchPredictions++;
             // Check to see if the currentPC is in the Branch Target Buffer or not
-            if (branchTargetBuffer.ContainsKey(_currentPC))
+            if (branchTargetBuffer.Contains(_currentPC))
             {
                 bool prediction; // used to hold the resulting prediciton
 
                 // Hash the BHSW with the Fetch Addr
-                byte targetLSB = (BitConverter.GetBytes(_branchTarget))[0]; // Get the First Byte (LSB)
+                byte targetLSB = (BitConverter.GetBytes(_currentPC))[0]; // Get the First Byte (LSB) // WAS _branchTarget)
                 byte hash = BitConverter.GetBytes(this.branchHistoryShiftReg ^ targetLSB)[0];
                
                 // Get the Ask the SM at the hash what the prediction is.
@@ -112,7 +100,7 @@ namespace CISCsim
             else // If the BTB does not contain the branch at the Current PC
             {
                 //Add the current PC/Target to the table
-                branchTargetBuffer.Add(_currentPC, _branchTarget);
+                branchTargetBuffer.Add(_currentPC);
 
                 // Return as not predicted
                 return false; 
@@ -120,6 +108,17 @@ namespace CISCsim
         }
 
         // TODO: Add update branches (this should also update BHSR)
+
+        public void updateBranchSM(int _currentPC, bool prediction, bool actualResult )
+        {
+            if (prediction != actualResult)
+                Statistics.branchMispredicts++;
+            byte targetLSB = (BitConverter.GetBytes(_currentPC))[0]; // Get the First Byte (LSB) // WAS _branchTarget)
+            byte hash = BitConverter.GetBytes(this.branchHistoryShiftReg ^ targetLSB)[0];
+
+            this.branchPredictorTable[hash].Update(actualResult);
+
+        }
 
 
         ///////////////////////

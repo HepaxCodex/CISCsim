@@ -32,7 +32,11 @@ namespace CISCsim
         /// </summary>
         public void runCycle()
         {
-            // 1) Get the Instructions from the Fetch Buffer
+            // 1) Check to see if there is a branch mispredict
+            // Note that this is easier to perform here than in the fetch stage
+
+            
+            // 2) Get the Instructions from the Fetch Buffer
             this.getInstructionsFromFetch();
         }
 

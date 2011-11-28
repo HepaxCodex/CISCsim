@@ -21,7 +21,11 @@ namespace CISCsim
 
         public ArchRegFile()
         {
+            regFile = new ArfEntry[64];
+            for (int i = 0; i < 64; i++)
+                regFile[i] = new ArfEntry();
         }
+
 
     }
 }
