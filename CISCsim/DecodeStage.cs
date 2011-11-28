@@ -6,11 +6,10 @@ using System.Text;
 namespace CISCsim
 {
     /// <summary>
-    /// Performs Instruction Decoding and Dispatching to the Issue Stage
+    /// Performs Instruction Decoding
     /// </summary>
     class DecodeStage
     {
-
         #region Data
         /// <summary>
         /// Holds the Instructions 
@@ -31,37 +30,26 @@ namespace CISCsim
         /// <summary>
         /// Perform the Decode Stage
         /// </summary>
-        public void runCycle(FetchStage fetchStage, IssueStage issueStage, RenameRegisterFile rrf)
+        public void runCycle(FetchStage fetchStage)
         {
-            // 1) Get the Instructions from teh Fetch Buffer
+            // 1) Get the Instructions from the Fetch Buffer
             this.getInstructionsFromFetch(fetchStage);
+        }
 
-            // 2) Process each instruction in the decode buffer
-            bool stop = false; // Stop once we reach an instruction that can't fit
-            while( this.decodeBuffer.Count > 0 && stop == false)
-            {
-                Instruction instr = this.decodeBuffer.Peek();
+        public Instruction getInstruction()
+        {
+            return this.decodeBuffer.Dequeue();
+        }
 
-                // Break if there is no more room in the system
-                if (this.systemReadyForInstruction(instr, issueStage, rrf) == false)
-                {
-                    stop = true;
-                    continue;
-                }
-
-                instr = this.decodeBuffer.Dequeue(); // Remove the instruction from the decode buffer
-
-                // TODO: Move the Instruction into the other buffers
-
-            }
-
+        public bool isEmpty()
+        {
+            return (this.decodeBuffer.Count == 0);
         }
 
 
         #endregion
 
         #region Private Functions
-
 
         /// <summary>
         /// Debugging Function
@@ -71,8 +59,6 @@ namespace CISCsim
         {
             this.decodeBuffer.Dequeue();
         }
-
-
 
         /// <summary>
         /// Moves instructions from the fetch Stage buffer to the decode Stage buffer
@@ -114,80 +100,12 @@ namespace CISCsim
         {
             if (Config.superScalerFactor - this.decodeBuffer.Count < 0)
             {
-                System.Console.WriteLine("ERROR: Decide Buffer has too many elements!!");
+                System.Console.WriteLine("ERROR: Decode Buffer has too many elements!!");
             }
             return Config.superScalerFactor - this.decodeBuffer.Count;
         }
 
-        
-        /// <summary>
-        /// Determines the Instruction type and checks the appropriate Reservation Station for space
-        /// </summary>
-        /// <param name="instr">The Instrucion that needs moved</param>
-        /// <param name="issueStage">The Issue Stage that will handle the instruction</param>
-        /// <returns>True if there is space available, false otherwise</returns>
-        private bool isReservationStationAvaialble(Instruction instr, IssueStage issueStage)
-        {
-           switch (instr.executionType)
-                {
-                    case Instruction.ExecutionType.Logical:
-                    case Instruction.ExecutionType.Integer:
-                        if (issueStage.integerStation.isFull()) return false;
-                        break;
-                    case Instruction.ExecutionType.FloatingPoint:
-                        if (issueStage.fpStation.isFull()) return false;
-                        break;
-                    case Instruction.ExecutionType.Mem:
-                        if (issueStage.memStation.isFull()) return false;
-                        break;
-                    case Instruction.ExecutionType.MultDiv:
-                        if (issueStage.multDivStation.isFull()) return false;
-                        break;
-                    case Instruction.ExecutionType.Branch:
-                        if (issueStage.branchStation.isFull()) return false;
-                        break;
-                    case Instruction.ExecutionType.Nop:
-                        //TODO: Decide what to do with Nop in Decode Stage
-                        break;
-                    default:
-                        System.Console.WriteLine("Decode Stage found Unknown Instruction Execution Type");
-                        break;
-                }
-           return true;
-
-        }
-
-
-        /// <summary>
-        /// Checks to see if there is space in all appropriate buffers for the instruction
-        /// </summary>
-        /// <param name="instr">Instruction to be moved</param>
-        /// <param name="issueStage">Issue Stage for instruction</param>
-        /// <param name="rrf">Rename Register File</param>
-        /// <returns>true if the system is ready, false otherwise</returns>
-        private bool systemReadyForInstruction(Instruction instr, IssueStage issueStage, RenameRegisterFile rrf)
-        {
-            //TODO: Check ROB
-
-            // Check to see if there is space available in the reservation stations
-            if (this.isReservationStationAvaialble(instr, issueStage) == false)
-            {
-                Statistics.reservationStationFull++;
-                return false;
-            }
-
-            // Check to see if there is space available in the rrf
-            if (rrf.spaceAvailable() == false)
-            {
-                Statistics.registerRenameFileFull++;
-                return false;
-            }
-
-            return true;
-        }
-
 #endregion
-
 
     }
 }

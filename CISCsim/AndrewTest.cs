@@ -9,18 +9,25 @@ namespace CISCsim
     {
         public static void RunTest()
         {
+            FetchStage fetchStage = new FetchStage(Config.traceFilename);
             DecodeStage decodeStage = new DecodeStage();
-            FetchStage fetchStage = new FetchStage("..\\..\\InputFiles\\fpppp.tra");
+            DispatchStage dispatchStage = new DispatchStage();
             IssueStage issueStage = new IssueStage();
             RenameRegisterFile rrf = new RenameRegisterFile();
 
             // First Cycle
-            decodeStage.runCycle(fetchStage, issueStage, rrf);
+            dispatchStage.runCycle(decodeStage, issueStage, rrf);
+            decodeStage.runCycle(fetchStage);
             fetchStage.Fetch();
-            
+
 
             // Second Cycle
-            decodeStage.runCycle(fetchStage, issueStage, rrf);
+            dispatchStage.runCycle(decodeStage, issueStage, rrf);
+            decodeStage.runCycle(fetchStage);
+            fetchStage.Fetch();
+
+            // Third Cycle
+            dispatchStage.runCycle(decodeStage, issueStage, rrf);
 
 
             /*
@@ -53,20 +60,6 @@ namespace CISCsim
             fetchStage.Fetch();
             //CycleCleanup.fetch2Decode(testFetch, testDecode);
              * */
-
-
-            
-
-            
-            
-
-
         }
-
-
-
-
-
-
     }
 }
