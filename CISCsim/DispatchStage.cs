@@ -52,10 +52,12 @@ namespace CISCsim
                 // Move the Instruction into its reservation station, into the reorder buffer,
                 // and into the rename register file if needed
                 int robTag;
+                
                 robTag = dispatchToReorderBuffer(instr);
                 dispatchToReservationStation(instr, robTag);
             }
         }
+
 
         /// <summary>
         /// Puts the instruction into the reorder buffer
@@ -64,6 +66,7 @@ namespace CISCsim
         private int dispatchToReorderBuffer(Instruction instr)
         {
             // TODO: implement this function
+            
             return 0;
         }
 

@@ -80,7 +80,7 @@ namespace CISCsim
             if (this.cacheMissed == false)
             {
                 // We didn't miss the cache last time, so we have to see if we miss this time
-                if (rand.Next(100) < Config.level1CacheMissPercent)
+                if (rand.Next(100) < Config.level1CacheInstrMissPercent)
                 {
                     Statistics.level1CacheMisses++;
 

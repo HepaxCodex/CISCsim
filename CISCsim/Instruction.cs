@@ -121,8 +121,6 @@ namespace CISCsim
                 case "addiu":
                 case "sub":
                 case "subu":
-                case "mult":
-                case "div":
                 case "divu":
                 case "mfhi":
                 case "mflo":
@@ -132,6 +130,10 @@ namespace CISCsim
                 case "mtc1":
                 case "dmtc1":
                     result =  ExecutionType.Integer;
+                    break;
+                case "mult":
+                case "div":
+                    result = ExecutionType.MultDiv;
                     break;
                 case "and":
                 case "andi":

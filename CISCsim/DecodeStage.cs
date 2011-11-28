@@ -58,7 +58,6 @@ namespace CISCsim
                     // 2) Get the Instructions from the Fetch Buffer
                     this.getInstructionsFromFetch();
                 }
-
             }
         }
 

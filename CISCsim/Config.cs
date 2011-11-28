@@ -18,9 +18,18 @@ namespace CISCsim
         public static int numRenamingTableEntries       = 10;
         public static int numReorderBufferEntries       = 10;
 
-        public static int level1CacheMissPercent        = 1;
+        public static int level1CacheInstrMissPercent   = 1;
+        public static int level1CacheDataMissPercent    = 3;
         public static int level2CacheMissPercent        = 20;
         public static int level1CacheMissPenalty        = 5;
         public static int level2CacheMissPenalty        = 200;
+
+        public static int intExeLatency    = 1;
+        public static int mulDivExeLatency = 4;
+        public static int fpExeLatency     = 5;
+        public static int memExeLatency    = 2;
+        public static int branchExeLatency = 1;
+
+
     }
 }
