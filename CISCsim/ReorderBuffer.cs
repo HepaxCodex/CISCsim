@@ -21,7 +21,7 @@ namespace CISCsim
         /// <returns>true if full, false otherwise</returns>
         public bool isFull()
         {
-            return (Config.numReorderBufferEntries - this.buffer.Count >0 );
+            return (Config.numReorderBufferEntries - this.buffer.Count > 0 );
         }
 
 
