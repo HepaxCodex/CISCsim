@@ -32,8 +32,12 @@ namespace CISCsim
         /// <summary>
         /// The CPU's architecture register file
         /// </summary>
-        public static GShareBranchPredictor branchPredictor = new GShareBranchPredictor();
         public static ArchRegFile arf = new ArchRegFile();
+
+        /// <summary>
+        /// The CPU's Global Share 2-bit Branch Predictor
+        /// </summary>
+        public static GShareBranchPredictor branchPredictor = new GShareBranchPredictor();
 
         // TODO: figure out if we want all the stages in here? Seems like it would
         // make sense to have this static CPU that you call CPU.fetchStage.runCycle(), etc.
