@@ -48,5 +48,9 @@ namespace CISCsim
         public static FetchStage fetchStage = new FetchStage();
         public static DecodeStage decodeStage = new DecodeStage();
         public static IssueStage issueStage = new IssueStage();
+
+
+        public static bool branchMispredictionStall = false;
+
     }
 }

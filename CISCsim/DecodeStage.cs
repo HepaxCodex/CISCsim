@@ -29,15 +29,37 @@ namespace CISCsim
 
         /// <summary>
         /// Perform the Decode Stage
+        /// 
+        /// CHecks to see if there is a stall on reading more instructions
+        /// from the fetch stage due to a previously detected Branch Misprediction
+        /// that has not completed the execute stage yet.
+        /// 
+        /// Then it checks the last two instructions in the fetch stage to see 
+        /// if there is branch, and if it was predicted correctly.  This Enables
+        /// a stall if necessary
+        /// 
+        /// Otherwise, copy instructions from the fetch stage
+        /// 
         /// </summary>
         public void runCycle()
         {
-            // 1) Check to see if there is a branch mispredict
-            // Note that this is easier to perform here than in the fetch stage
+            // Make sure that we are not in a stall state waiting on
+            // a branch instruction to finish executing
+            if (CPU.branchMispredictionStall == false)
+            {
+                // Detect a branch mispredictions
+                if (CPU.fetchStage.isBranchMispredict())
+                {
+                    this.addInstructionToBuffer(CPU.fetchStage.getInstruction()); // get the branch instruction in question
+                    CPU.branchMispredictionStall = true;
+                }
+                else
+                {
+                    // 2) Get the Instructions from the Fetch Buffer
+                    this.getInstructionsFromFetch();
+                }
 
-            
-            // 2) Get the Instructions from the Fetch Buffer
-            this.getInstructionsFromFetch();
+            }
         }
 
         public Instruction getInstruction()
