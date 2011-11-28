@@ -21,7 +21,7 @@ namespace CISCsim
         public ReservationStation()
         {
             this.buffer = new Queue<ReservationStationEntry>();
-            this.maxQueueSize = Config.numReservationStations;
+            this.maxQueueSize = Config.numReservationStationEntries;
         }
 
         /// <summary>
@@ -55,7 +55,12 @@ namespace CISCsim
              * */
         }
 
+        /// <summary>
+        /// Puts the instruction into the reservation station, filling the entries
+        /// </summary>
+        public void ReceiveInstruction(Instruction instr)
+        {
 
-
+        }
     }
 }

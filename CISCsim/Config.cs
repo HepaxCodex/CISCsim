@@ -10,17 +10,17 @@ namespace CISCsim
     /// </summary>
     static class Config
     {
-        public static string traceFilename           = "..\\..\\InputFiles\\fpppp.tra";
+        public static string traceFilename              = "..\\..\\InputFiles\\fpppp.tra";
 
-        public static int superScalerFactor          = 5;
-        public static int numReservationStations     = 10;
-        public static int numFunctionalUnits         = 4; // Applies to everything except branch units
-        public static int numRenamingTableEntries    = 10;
-        public static int numReorderBufferEntries     = 10;
+        public static int superScalerFactor             = 5;
+        public static int numReservationStationEntries  = 10;
+        public static int numFunctionalUnits            = 4; // Applies to everything except branch units
+        public static int numRenamingTableEntries       = 10;
+        public static int numReorderBufferEntries       = 10;
 
-        public static int level1CacheMissPercent     = 1;
-        public static int level2CacheMissPercent     = 20;
-        public static int level1CacheMissPenalty     = 5;
-        public static int level2CacheMissPenalty     = 200;
+        public static int level1CacheMissPercent        = 1;
+        public static int level2CacheMissPercent        = 20;
+        public static int level1CacheMissPenalty        = 5;
+        public static int level2CacheMissPenalty        = 200;
     }
 }

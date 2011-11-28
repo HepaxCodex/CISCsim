@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,15 +14,17 @@ namespace CISCsim
         /// <summary>
         /// Holds the Instructions 
         /// </summary>
-        private Queue<Instruction> dispatchBuffer;
+        private Instruction[] dispatchBuffer;
+        private BitArray dispatchBufferIndexValid;
 
         /// <summary>
         /// Default Constructor
-        /// Initializes the dispatch buffer Queue
+        /// Initializes the dispatch buffer array
         /// </summary>
         public DispatchStage()
         {
-            dispatchBuffer = new Queue<Instruction>();
+            dispatchBuffer = new Instruction[Config.superScalerFactor];
+            dispatchBufferIndexValid = new BitArray(Config.superScalerFactor, false);
         }
 
         /// <summary>
@@ -32,26 +35,51 @@ namespace CISCsim
             // 1) Get the Instructions from the decode Buffer
             this.getInstructionsFromDecode(decodeStage);
 
-            // 2) Process each instruction in the decode buffer
-            bool stop = false; // Stop once we reach an instruction that can't fit
-            while (this.dispatchBuffer.Count > 0 && stop == false)
+            // 2) Process each instruction in the dispatch buffer
+            //search through each instruction and dispatch it if possible
+            for (int i = 0; i < Config.superScalerFactor; i++)
             {
-                Instruction instr = this.dispatchBuffer.Peek();
-
-                // Break if there is no more room in the system
-                if (this.systemReadyForInstruction(instr, issueStage, rrf) == false)
+                //If this entry contains an instruction...
+                if (dispatchBufferIndexValid[i] == true)
                 {
-                    stop = true;
-                    continue;
+                    Instruction instr = dispatchBuffer[i];
+
+                    // Moved the check for if there's room in a reservation station out of
+                    // systemReadyForInstruction() to here -btf
+                    if (this.isReservationStationAvaialble(instr, issueStage) == false)
+                    {
+                        continue;
+                    }
+
+                    // Break if there is no more room in the RRF or ROB
+                    if (this.systemReadyForInstruction(instr, issueStage, rrf) == false)
+                    {
+                        break;
+                    }
+
+                    dispatchBufferIndexValid[i] = false; // Remove the instruction from the dispatch buffer
+
+                    // TODO: We found that we're able to dispatch this instruction.
+                    // Move the Instruction into its reservation station, into the reorder buffer,
+                    // and into the rename register file if needed
                 }
-
-                instr = this.dispatchBuffer.Dequeue(); // Remove the instruction from the dispatch buffer
-
-                // TODO: We found that we're able to dispatch this instruction.
-                // Move the Instruction into its reservation station, into the reorder buffer,
-                // and into the rename register file if needed
-
             }
+        }
+
+        /// <summary>
+        /// Gets the number of instructions in the Dispatch buffer
+        /// </summary>
+        private int getDispatchBufferCount()
+        {
+            int count = 0;
+            for (int i = 0; i < dispatchBufferIndexValid.Count; i++)
+            {
+                if (dispatchBufferIndexValid[i] == true)
+                {
+                    count++;
+                }
+            }
+            return count;
         }
 
         /// <summary>
@@ -73,9 +101,17 @@ namespace CISCsim
         /// <returns></returns>
         private bool addInstructionToBuffer(Instruction instr)
         {
-            if (Config.superScalerFactor - this.dispatchBuffer.Count > 0)
+            if (Config.superScalerFactor - this.getDispatchBufferCount() > 0)
             {
-                this.dispatchBuffer.Enqueue(instr);
+                for (int i = 0; i < Config.superScalerFactor; i++)
+                {
+                    if (this.dispatchBufferIndexValid[i] == false)
+                    {
+                        dispatchBuffer[i] = instr;
+                        dispatchBufferIndexValid[i] = true;
+                        break;
+                    }
+                }
                 return true;
             }
             else
@@ -91,11 +127,11 @@ namespace CISCsim
         /// <returns>The number of available slots in the Decode Instruction Bffer</returns>
         private int getEmptySlots()
         {
-            if (Config.superScalerFactor - this.dispatchBuffer.Count < 0)
+            if (Config.superScalerFactor - this.getDispatchBufferCount() < 0)
             {
                 System.Console.WriteLine("ERROR: Dispatch Buffer has too many elements!!");
             }
-            return Config.superScalerFactor - this.dispatchBuffer.Count;
+            return Config.superScalerFactor - this.getDispatchBufferCount();
         }
 
         /// <summary>
@@ -146,12 +182,17 @@ namespace CISCsim
         {
             //TODO: Check ROB
 
+            // Took this out of here; We still need to check if a reservation station
+            // is available, but we shouldn't stop checking if other instructions could
+            // be dispatched if there's no reservation station available for this instr. -btf
+            /*
             // Check to see if there is space available in the reservation stations
             if (this.isReservationStationAvaialble(instr, issueStage) == false)
             {
                 Statistics.reservationStationFull++;
                 return false;
             }
+            */
 
             // Check to see if there is space available in the rrf
             if (rrf.spaceAvailable() == false)

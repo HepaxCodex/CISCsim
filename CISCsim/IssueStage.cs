@@ -23,7 +23,9 @@ namespace CISCsim
             this.fpStation = new ReservationStation();
             this.memStation = new ReservationStation(); // Per the Specification
             this.multDivStation = new ReservationStation();
-            this.branchStation = new ReservationStation(1);
+            //I think the number of entries is the same for all the RSs.
+            //The thing that changes with branch is the # of functional units. -btf
+            this.branchStation = new ReservationStation();
         }
 
     }
