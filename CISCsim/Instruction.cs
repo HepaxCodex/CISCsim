@@ -21,14 +21,23 @@ namespace CISCsim
         public int address;
         
         /// <summary>
-        /// Instrauction name i.e. add, mov, j
+        /// Instruction name i.e. add, mov, j
         /// </summary>
         public string instruction;
 
-        public string source1;
-        public string source2;
+        /// <summary>
+        /// These bools tell whether source1 and source2 are registers or immediates
+        /// </summary>
+        public bool source1Imm;
+        public bool source2Imm;
 
-        public string dest;
+        public int source1;
+        public string source1String;
+        public int source2;
+        public string source2String;
+
+        public int dest;
+        public string destString;
 
         /// <summary>
         /// The Type of the Instruction (used for Execution Stage)
@@ -50,6 +59,10 @@ namespace CISCsim
         public Instruction(string traceLine)
         {
             string[] tokens = traceLine.Split(' ');
+
+            //initialize immediates to false - these are updated in setArguments
+            this.source1Imm = false;
+            this.source2Imm = false;
             
             this.address = int.Parse(tokens[0]);
             this.instruction = tokens[1];
@@ -186,26 +199,39 @@ namespace CISCsim
             switch (tokens.Length)
             {
                 case 1: // We only have on argument, often this is a jump command
-                    this.dest = tokens[0];
+                    this.dest = getIntFromRegisterString(tokens[0]);
                     break;
                 case 2:
                     if (tokens[1].Contains('(')) // Actually has 3 arguments but in r1,10(r3) form
                     {
                         string[] lastargs = tokens[1].Split(new char[] { '(', ')' });
-                        this.dest = tokens[0];
-                        this.source1 = lastargs[0];
-                        this.source2 = lastargs[1];
+                        this.dest = getIntFromRegisterString(tokens[0]);
+                        this.destString = tokens[0];
+                        this.source1 = getIntFromRegisterString(lastargs[0]);
+                        this.source1String = lastargs[0];
+                        this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                        this.source2 = getIntFromRegisterString(lastargs[1]);
+                        this.source2String = lastargs[1];
+                        this.source2Imm = !(this.source2String.StartsWith("r") || this.source2String.StartsWith("f"));
                     }
                     else
                     {
-                        this.dest = tokens[0];
-                        this.source1 = tokens[1];
+                        this.dest = getIntFromRegisterString(tokens[0]);
+                        this.destString = tokens[0];
+                        this.source1 = getIntFromRegisterString(tokens[1]);
+                        this.source1String = tokens[1];
+                        this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
                     }
                     break;
                 case 3:
-                    this.dest = tokens[0];
-                    this.source1 = tokens[1];
-                    this.source2 = tokens[2];
+                    this.dest = getIntFromRegisterString(tokens[0]);
+                    this.destString = tokens[0];
+                    this.source1 = getIntFromRegisterString(tokens[1]);
+                    this.source1String = tokens[1];
+                    this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                    this.source2 = getIntFromRegisterString(tokens[2]);
+                    this.source2String = tokens[2];
+                    this.source2Imm = !(this.source2String.StartsWith("r") || this.source2String.StartsWith("f"));
                     break;
                 default:
                     System.Console.WriteLine("ERROR: Unknown instruction argument format found: \"{0}\"", args);
@@ -215,8 +241,27 @@ namespace CISCsim
             }
         }
 
-
-
-        
+        /// <summary>
+        /// This takes arguments like "rX" or "fX" and retrieves the X as an int
+        /// </summary>
+        // TODO: Finish putting the correct source or dest for instructions that use FCC and HILO
+        private int getIntFromRegisterString(string regString)
+        {
+            int regValue;
+            if (regString.StartsWith("r"))
+            {
+                regValue = Convert.ToInt32(regString.Substring(1));
+            }
+            else if (regString.StartsWith("f"))
+            {
+                regValue = Convert.ToInt32(regString.Substring(1)) + 32;
+            }
+            else
+            {
+                //Immediate value?
+                regValue = Convert.ToInt32(regString);
+            }
+            return regValue;
+        }
     }
 }

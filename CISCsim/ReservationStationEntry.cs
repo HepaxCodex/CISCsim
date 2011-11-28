@@ -40,7 +40,7 @@ namespace CISCsim
         /// <summary>
         /// Entry in the Reorder Buffer
         /// </summary>
-        public int tag;
+        public int robTag;
         
         /// <summary>
         /// Constructor
@@ -53,15 +53,23 @@ namespace CISCsim
             this.valid1 = false;
             this.valid2 = false;
             this.ready = false;
-            this.tag = -1;
+            this.robTag = -1;
         }
 
         /// <summary>
         /// Constructor using initializers
         /// </summary>
-        public ReservationStationEntry(int blah)
+        public ReservationStationEntry(int op1, bool valid1, int op2, bool valid2, int robTag)
         {
-            // TODO: create this constructor having initializers for all fields
+            this.op1 = op1;
+            this.valid1 = valid1;
+            this.op2 = op2;
+            this.valid2 = valid2;
+            this.robTag = robTag;
+
+            this.ready = (this.valid1 && this.valid2);
+
+            this.busy = true;
         }
     }
 }
