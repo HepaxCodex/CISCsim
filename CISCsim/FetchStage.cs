@@ -162,25 +162,29 @@ namespace CISCsim
         /// <returns>true if there is was mispredict</returns>
         public bool isBranchMispredict()
         {
-            Instruction instr = this.fetchBuffer.Peek();
-
-            bool branchPrediction = CPU.branchPredictor.predictBranch(instr.address);
-            bool actualResult;
-            Instruction next =  this.fetchBuffer.First(entry => entry != instr);
-
-            // if next pc == first pc +8 , branch not taken
-            if (next.address == instr.address + 8)
+            if (this.fetchBuffer.Count >= 2)
             {
-                actualResult = false;
-            }
-            else
-            {
-                actualResult = true;
-            }
+                Instruction instr = this.fetchBuffer.Peek();
 
-            CPU.branchPredictor.updateBranchSM(instr.address, branchPrediction, actualResult);
+                bool branchPrediction = CPU.branchPredictor.predictBranch(instr.address);
+                bool actualResult;
+                Instruction next = this.fetchBuffer.First(entry => entry != instr);
 
-            return (branchPrediction == actualResult);
+                // if next pc == first pc +8 , branch not taken
+                if (next.address == instr.address + 8)
+                {
+                    actualResult = false;
+                }
+                else
+                {
+                    actualResult = true;
+                }
+
+                CPU.branchPredictor.updateBranchSM(instr.address, branchPrediction, actualResult);
+
+                return (branchPrediction == actualResult);
+            }
+            return false;
             
         }
 
