@@ -58,9 +58,13 @@ namespace CISCsim
         /// <summary>
         /// Puts the instruction into the reservation station, filling the entries
         /// </summary>
-        public void ReceiveInstruction(Instruction instr)
+        public void ReceiveInstruction(Instruction instr, int robTag)
         {
-
+            // TODO: 1) Create res station entry by checking ARF for instr's src1 and src2
+            // If ARF entry Busy = false, data is valid, put it in as opN, set validN true
+            // Else ARF entry Busy = true, take ARF tag to check RRF entry.
+            // If RRF entry valid = true, data is valid, put it in as opN, set validN true
+            // Else RRF entry valid = false, opN gets the RRF entry tag, set validN false
         }
     }
 }

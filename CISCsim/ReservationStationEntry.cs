@@ -12,7 +12,7 @@ namespace CISCsim
         /// </summary>
         public bool busy;
 
-        /// <psummary>
+        /// <summary>
         /// operand 1
         /// </summary>
         public int op1;
@@ -38,9 +38,30 @@ namespace CISCsim
         public bool ready;
 
         /// <summary>
-        /// Entry in the Register Rename File
+        /// Entry in the Reorder Buffer
         /// </summary>
         public int tag;
         
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public ReservationStationEntry()
+        {
+            this.busy = false;
+            this.op1 = -1;
+            this.op2 = -1;
+            this.valid1 = false;
+            this.valid2 = false;
+            this.ready = false;
+            this.tag = -1;
+        }
+
+        /// <summary>
+        /// Constructor using initializers
+        /// </summary>
+        public ReservationStationEntry(int blah)
+        {
+            // TODO: create this constructor having initializers for all fields
+        }
     }
 }

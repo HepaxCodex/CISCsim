@@ -31,14 +31,14 @@ namespace CISCsim
         public string dest;
 
         /// <summary>
-        /// The Type of the Instruction (used for Exeuction Stage)
+        /// The Type of the Instruction (used for Execution Stage)
         /// </summary>
         public ExecutionType executionType;
 
         /// <summary>
-        /// DO NOT USE! Default Constructor
+        /// DO NOT USE! Default Constructor (made private so it's not used)
         /// </summary>
-        public Instruction()
+        private Instruction()
         {
         }
 

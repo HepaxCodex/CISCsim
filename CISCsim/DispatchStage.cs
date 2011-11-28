@@ -14,17 +14,15 @@ namespace CISCsim
         /// <summary>
         /// Holds the Instructions 
         /// </summary>
-        private Instruction[] dispatchBuffer;
-        private BitArray dispatchBufferIndexValid;
+        private Queue<Instruction> dispatchBuffer;
 
         /// <summary>
         /// Default Constructor
-        /// Initializes the dispatch buffer array
+        /// Initializes the dispatch buffer Queue
         /// </summary>
         public DispatchStage()
         {
-            dispatchBuffer = new Instruction[Config.superScalerFactor];
-            dispatchBufferIndexValid = new BitArray(Config.superScalerFactor, false);
+            dispatchBuffer = new Queue<Instruction>();
         }
 
         /// <summary>
@@ -36,50 +34,63 @@ namespace CISCsim
             this.getInstructionsFromDecode(decodeStage);
 
             // 2) Process each instruction in the dispatch buffer
-            //search through each instruction and dispatch it if possible
-            for (int i = 0; i < Config.superScalerFactor; i++)
+            bool stop = false; // Stop once we reach an instruction that can't fit
+            while (this.dispatchBuffer.Count > 0 && stop == false)
             {
-                //If this entry contains an instruction...
-                if (dispatchBufferIndexValid[i] == true)
+                Instruction instr = this.dispatchBuffer.Peek();
+
+                // Break if there is no more room in the RRF or ROB or ResStation
+                if (this.systemReadyForInstruction(instr, issueStage, rrf) == false)
                 {
-                    Instruction instr = dispatchBuffer[i];
-
-                    // Moved the check for if there's room in a reservation station out of
-                    // systemReadyForInstruction() to here -btf
-                    if (this.isReservationStationAvaialble(instr, issueStage) == false)
-                    {
-                        continue;
-                    }
-
-                    // Break if there is no more room in the RRF or ROB
-                    if (this.systemReadyForInstruction(instr, issueStage, rrf) == false)
-                    {
-                        break;
-                    }
-
-                    dispatchBufferIndexValid[i] = false; // Remove the instruction from the dispatch buffer
-
-                    // TODO: We found that we're able to dispatch this instruction.
-                    // Move the Instruction into its reservation station, into the reorder buffer,
-                    // and into the rename register file if needed
+                    stop = true;
+                    continue;
                 }
+
+                instr = this.dispatchBuffer.Dequeue(); // Remove the instruction from the dispatch buffer
+
+                // TODO: We found that we're able to dispatch this instruction.
+                // Move the Instruction into its reservation station, into the reorder buffer,
+                // and into the rename register file if needed
+                int robTag;
+                robTag = dispatchToReorderBuffer(instr);
+                dispatchToReservationStation(issueStage, instr, robTag);
             }
         }
 
         /// <summary>
-        /// Gets the number of instructions in the Dispatch buffer
+        /// Puts the instruction into the reorder buffer
         /// </summary>
-        private int getDispatchBufferCount()
+        private int dispatchToReorderBuffer(Instruction instr)
         {
-            int count = 0;
-            for (int i = 0; i < dispatchBufferIndexValid.Count; i++)
+            // TODO: implement this function
+            return 0;
+        }
+
+        /// <summary>
+        /// Puts the instruction into the appropriate reservation station (located in the issue stage)
+        /// </summary>
+        private void dispatchToReservationStation(IssueStage issueStage, Instruction instr, int robTag)
+        {
+            switch (instr.executionType)
             {
-                if (dispatchBufferIndexValid[i] == true)
-                {
-                    count++;
-                }
+                case Instruction.ExecutionType.Branch:
+                    issueStage.branchStation.ReceiveInstruction(instr, robTag);
+                    break;
+                case Instruction.ExecutionType.FloatingPoint:
+                    issueStage.fpStation.ReceiveInstruction(instr, robTag);
+                    break;
+                case Instruction.ExecutionType.Integer:
+                    issueStage.integerStation.ReceiveInstruction(instr, robTag);
+                    break;
+                case Instruction.ExecutionType.Mem:
+                    issueStage.memStation.ReceiveInstruction(instr, robTag);
+                    break;
+                case Instruction.ExecutionType.MultDiv:
+                    issueStage.multDivStation.ReceiveInstruction(instr, robTag);
+                    break;
+                case Instruction.ExecutionType.Nop:
+                    break;
             }
-            return count;
         }
 
         /// <summary>
@@ -101,17 +112,9 @@ namespace CISCsim
         /// <returns></returns>
         private bool addInstructionToBuffer(Instruction instr)
         {
-            if (Config.superScalerFactor - this.getDispatchBufferCount() > 0)
+            if (Config.superScalerFactor - this.dispatchBuffer.Count() > 0)
             {
-                for (int i = 0; i < Config.superScalerFactor; i++)
-                {
-                    if (this.dispatchBufferIndexValid[i] == false)
-                    {
-                        dispatchBuffer[i] = instr;
-                        dispatchBufferIndexValid[i] = true;
-                        break;
-                    }
-                }
+                this.dispatchBuffer.Enqueue(instr);
                 return true;
             }
             else
@@ -127,11 +130,11 @@ namespace CISCsim
         /// <returns>The number of available slots in the Decode Instruction Bffer</returns>
         private int getEmptySlots()
         {
-            if (Config.superScalerFactor - this.getDispatchBufferCount() < 0)
+            if (Config.superScalerFactor - this.dispatchBuffer.Count() < 0)
             {
                 System.Console.WriteLine("ERROR: Dispatch Buffer has too many elements!!");
             }
-            return Config.superScalerFactor - this.getDispatchBufferCount();
+            return Config.superScalerFactor - this.dispatchBuffer.Count();
         }
 
         /// <summary>
@@ -168,7 +171,6 @@ namespace CISCsim
                     break;
             }
             return true;
-
         }
 
         /// <summary>
@@ -182,17 +184,12 @@ namespace CISCsim
         {
             //TODO: Check ROB
 
-            // Took this out of here; We still need to check if a reservation station
-            // is available, but we shouldn't stop checking if other instructions could
-            // be dispatched if there's no reservation station available for this instr. -btf
-            /*
             // Check to see if there is space available in the reservation stations
             if (this.isReservationStationAvaialble(instr, issueStage) == false)
             {
                 Statistics.reservationStationFull++;
                 return false;
             }
-            */
 
             // Check to see if there is space available in the rrf
             if (rrf.spaceAvailable() == false)
