@@ -28,10 +28,10 @@ namespace CISCsim
         /// <summary>
         /// Perform the Dispatch Stage
         /// </summary>
-        public void runCycle(DecodeStage decodeStage, IssueStage issueStage, RenameRegisterFile rrf)
+        public void runCycle()
         {
             // 1) Get the Instructions from the decode Buffer
-            this.getInstructionsFromDecode(decodeStage);
+            this.getInstructionsFromDecode();
 
             // 2) Process each instruction in the dispatch buffer
             bool stop = false; // Stop once we reach an instruction that can't fit
@@ -40,7 +40,7 @@ namespace CISCsim
                 Instruction instr = this.dispatchBuffer.Peek();
 
                 // Break if there is no more room in the RRF or ROB or ResStation
-                if (this.systemReadyForInstruction(instr, issueStage, rrf) == false)
+                if (this.systemReadyForInstruction(instr) == false)
                 {
                     stop = true;
                     continue;
@@ -53,7 +53,7 @@ namespace CISCsim
                 // and into the rename register file if needed
                 int robTag;
                 robTag = dispatchToReorderBuffer(instr);
-                dispatchToReservationStation(issueStage, instr, robTag);
+                dispatchToReservationStation(instr, robTag);
             }
         }
 
@@ -69,24 +69,24 @@ namespace CISCsim
         /// <summary>
         /// Puts the instruction into the appropriate reservation station (located in the issue stage)
         /// </summary>
-        private void dispatchToReservationStation(IssueStage issueStage, Instruction instr, int robTag)
+        private void dispatchToReservationStation(Instruction instr, int robTag)
         {
             switch (instr.executionType)
             {
                 case Instruction.ExecutionType.Branch:
-                    issueStage.branchStation.ReceiveInstruction(instr, robTag);
+                    CPU.issueStage.branchStation.ReceiveInstruction(instr, robTag);
                     break;
                 case Instruction.ExecutionType.FloatingPoint:
-                    issueStage.fpStation.ReceiveInstruction(instr, robTag);
+                    CPU.issueStage.fpStation.ReceiveInstruction(instr, robTag);
                     break;
                 case Instruction.ExecutionType.Integer:
-                    issueStage.integerStation.ReceiveInstruction(instr, robTag);
+                    CPU.issueStage.integerStation.ReceiveInstruction(instr, robTag);
                     break;
                 case Instruction.ExecutionType.Mem:
-                    issueStage.memStation.ReceiveInstruction(instr, robTag);
+                    CPU.issueStage.memStation.ReceiveInstruction(instr, robTag);
                     break;
                 case Instruction.ExecutionType.MultDiv:
-                    issueStage.multDivStation.ReceiveInstruction(instr, robTag);
+                    CPU.issueStage.multDivStation.ReceiveInstruction(instr, robTag);
                     break;
                 case Instruction.ExecutionType.Nop:
                     break;
@@ -97,11 +97,11 @@ namespace CISCsim
         /// Moves instructions from the decode Stage buffer to the dispatch Stage buffer
         /// </summary>
         /// <param name="decodeStage"></param>
-        private void getInstructionsFromDecode(DecodeStage decodeStage)
+        private void getInstructionsFromDecode()
         {
-            while (this.getEmptySlots() > 0 && !decodeStage.isEmpty())
+            while (this.getEmptySlots() > 0 && !CPU.decodeStage.isEmpty())
             {
-                this.addInstructionToBuffer(decodeStage.getInstruction());
+                this.addInstructionToBuffer(CPU.decodeStage.getInstruction());
             }
         }
 
@@ -143,25 +143,25 @@ namespace CISCsim
         /// <param name="instr">The Instrucion that needs moved</param>
         /// <param name="issueStage">The Issue Stage that will handle the instruction</param>
         /// <returns>True if there is space available, false otherwise</returns>
-        private bool isReservationStationAvaialble(Instruction instr, IssueStage issueStage)
+        private bool isReservationStationAvaialble(Instruction instr)
         {
             switch (instr.executionType)
             {
                 case Instruction.ExecutionType.Logical:
                 case Instruction.ExecutionType.Integer:
-                    if (issueStage.integerStation.isFull()) return false;
+                    if (CPU.issueStage.integerStation.isFull()) return false;
                     break;
                 case Instruction.ExecutionType.FloatingPoint:
-                    if (issueStage.fpStation.isFull()) return false;
+                    if (CPU.issueStage.fpStation.isFull()) return false;
                     break;
                 case Instruction.ExecutionType.Mem:
-                    if (issueStage.memStation.isFull()) return false;
+                    if (CPU.issueStage.memStation.isFull()) return false;
                     break;
                 case Instruction.ExecutionType.MultDiv:
-                    if (issueStage.multDivStation.isFull()) return false;
+                    if (CPU.issueStage.multDivStation.isFull()) return false;
                     break;
                 case Instruction.ExecutionType.Branch:
-                    if (issueStage.branchStation.isFull()) return false;
+                    if (CPU.issueStage.branchStation.isFull()) return false;
                     break;
                 case Instruction.ExecutionType.Nop:
                     //TODO: Decide what to do with Nop in Decode Stage
@@ -180,19 +180,24 @@ namespace CISCsim
         /// <param name="issueStage">Issue Stage for instruction</param>
         /// <param name="rrf">Rename Register File</param>
         /// <returns>true if the system is ready, false otherwise</returns>
-        private bool systemReadyForInstruction(Instruction instr, IssueStage issueStage, RenameRegisterFile rrf)
+        private bool systemReadyForInstruction(Instruction instr)
         {
             //TODO: Check ROB
-
+            if (CPU.rob.isFull())
+            {
+                Statistics.reorderBufferFull++;
+                return false;
+            }
+            
             // Check to see if there is space available in the reservation stations
-            if (this.isReservationStationAvaialble(instr, issueStage) == false)
+            if (this.isReservationStationAvaialble(instr) == false)
             {
                 Statistics.reservationStationFull++;
                 return false;
             }
 
             // Check to see if there is space available in the rrf
-            if (rrf.spaceAvailable() == false)
+            if (CPU.rrf.spaceAvailable() == false)
             {
                 Statistics.registerRenameFileFull++;
                 return false;

@@ -24,6 +24,11 @@ namespace CISCsim
         /// </summary>
         public static RenameRegisterFile rrf = new RenameRegisterFile();
 
+        /// <summary>
+        /// The CPU's reorder buffer
+        /// </summary>
+        public static ReorderBuffer rob = new ReorderBuffer();
+
         // TODO: figure out if we want all the stages in here? Seems like it would
         // make sense to have this static CPU that you call CPU.fetchStage.runCycle(), etc.
 

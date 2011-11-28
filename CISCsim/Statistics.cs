@@ -17,5 +17,6 @@ namespace CISCsim
 
         public static int registerRenameFileFull = 0;
         public static int reservationStationFull = 0;
+        public static int reorderBufferFull      = 0;
     }
 }

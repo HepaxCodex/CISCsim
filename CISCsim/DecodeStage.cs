@@ -30,10 +30,10 @@ namespace CISCsim
         /// <summary>
         /// Perform the Decode Stage
         /// </summary>
-        public void runCycle(FetchStage fetchStage)
+        public void runCycle()
         {
             // 1) Get the Instructions from the Fetch Buffer
-            this.getInstructionsFromFetch(fetchStage);
+            this.getInstructionsFromFetch();
         }
 
         public Instruction getInstruction()
@@ -65,11 +65,11 @@ namespace CISCsim
         /// </summary>
         /// <param name="fetchStage"></param>
         /// <param name="decodeStage"></param>
-        private void getInstructionsFromFetch(FetchStage fetchStage)
+        private void getInstructionsFromFetch()
         {
-            while (this.getEmptySlots() > 0 && !fetchStage.isEmpty())
+            while (this.getEmptySlots() > 0 && !CPU.fetchStage.isEmpty())
             {
-                this.addInstructionToBuffer(fetchStage.getInstruction());
+                this.addInstructionToBuffer(CPU.fetchStage.getInstruction());
             }
         }
 

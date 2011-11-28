@@ -12,7 +12,7 @@ namespace CISCsim
     {
         public static void RunTest()
         {
-            FetchStage testFetchStage = new FetchStage(Config.traceFilename);
+            FetchStage testFetchStage = new FetchStage();
             
             for (int i = 0; i < 200; i++)
             {

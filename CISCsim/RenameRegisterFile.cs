@@ -48,5 +48,10 @@ namespace CISCsim
             //TODO: Setup other fields
         }
 
+        public int findFirstEmptySlot()
+        {
+            return Array.IndexOf(rrfTable, rrfTable.First(entry => entry.busy == false));
+        }
+
     }
 }
