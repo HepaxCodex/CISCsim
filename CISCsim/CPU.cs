@@ -30,7 +30,7 @@ namespace CISCsim
         /// <summary>
         /// The CPU's pipeline stages
         /// </summary>
-        public static FetchStage fetchStage = new FetchStage(Config.traceFilename);
+        public static FetchStage fetchStage = new FetchStage();
         public static DecodeStage decodeStage = new DecodeStage();
         public static IssueStage issueStage = new IssueStage();
     }

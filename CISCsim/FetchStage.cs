@@ -38,15 +38,10 @@ namespace CISCsim
         /// </summary>
         private bool cacheMissed;
 
-        public FetchStage()
-        {
-        }
-
         /// <summary>
         /// Creates a new FetchStage with a fetchBuffer of superScalarWidth width.
-        /// 
         /// </summary>
-        public FetchStage(string instructionTraceFilename)
+        public FetchStage()
         {
             this.cacheMissed = false;
             this.cacheMissCountdown = 0;
@@ -55,11 +50,11 @@ namespace CISCsim
             //this.fetchBufferIndexValid = new BitArray(superScalarWidth);
             try
             {
-                this.traceReader = new StreamReader(instructionTraceFilename);
+                this.traceReader = new StreamReader(Config.traceFilename);
             }
             catch (Exception e)
             {
-                Console.WriteLine("FetchStage: The file \"{0}\" could not be read:", instructionTraceFilename);
+                Console.WriteLine("FetchStage: The file \"{0}\" could not be read:", Config.traceFilename);
                 Console.WriteLine("FetchStage: " + e.Message);
             }
         }
