@@ -44,8 +44,10 @@ namespace CISCsim
             RRFEntry emptySlot;
             emptySlot = rrfTable.First(entry => entry.busy == false);
             emptySlot.busy = true;
-
-            //TODO: Setup other fields
+            emptySlot.valid = false;
+            // There must be a destination if this instruction requires an RRF entry
+            emptySlot.destReg = instr.dest;
+            // Data stays null until it's updated by an execution result
         }
 
         public int findFirstEmptySlot()
