@@ -32,7 +32,6 @@ namespace CISCsim
                 this.fpUnits[i] = new ExecutionUnit();
                 this.multDivUnits[i] = new ExecutionUnit();
             }
-
         }
 
 
@@ -67,9 +66,9 @@ namespace CISCsim
                 // Then run the cycle and see if it finishes
                 if (unit.runCycle())
                 {
-                    // TODO: Move the Cycle / Update the ROB, RRF
-                    
+                    // TODO: Move the Cycle / Update the RRF
 
+                    CPU.rob.executionFinished(unit.entry);
                     // Tell Everyone that the reservation station entry is now available
                     unit.entry.busy = false;
                     return true;

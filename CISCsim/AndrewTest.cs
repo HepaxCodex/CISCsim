@@ -10,6 +10,7 @@ namespace CISCsim
         public static void RunTest()
         {
             // First Cycle
+            CPU.executeStage.runCycle();
             CPU.issueStage.runCycle();
             CPU.dispatchStage.runCycle();
             CPU.decodeStage.runCycle();
@@ -17,18 +18,21 @@ namespace CISCsim
 
 
             // Second Cycle
+            CPU.executeStage.runCycle();
             CPU.issueStage.runCycle();
             CPU.dispatchStage.runCycle();
             CPU.decodeStage.runCycle();
             CPU.fetchStage.Fetch();
 
             // Third Cycle
+            CPU.executeStage.runCycle();
             CPU.issueStage.runCycle();
             CPU.dispatchStage.runCycle();
             CPU.decodeStage.runCycle();
             CPU.fetchStage.Fetch();
 
             // Fourth Cycle
+            CPU.executeStage.runCycle();
             CPU.issueStage.runCycle();
             CPU.dispatchStage.runCycle();
             CPU.decodeStage.runCycle();

@@ -21,6 +21,7 @@ namespace CISCsim
         /// <returns>true if full, false otherwise</returns>
         public bool isFull()
         {
+            Statistics.reorderBufferFull++;
             return (Config.numReorderBufferEntries - this.buffer.Count == 0 );
         }
 
@@ -53,6 +54,20 @@ namespace CISCsim
                 return true;
             else
                 return false;
+        }
+
+        public void executionFinished(ReservationStationEntry resStationEntry)
+        {
+            RobEntry robEntry;
+            robEntry = this.buffer.FirstOrDefault(_robEntry => _robEntry.instruction == resStationEntry.instr);
+            if (robEntry == null)
+            {
+                System.Console.WriteLine("ROB.executionFinished(): An instruction finished but was not found in the ROB buffer");
+                return;
+            }
+
+            robEntry.finished = true;
+
         }
 
 
