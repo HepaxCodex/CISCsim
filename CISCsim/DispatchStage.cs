@@ -48,13 +48,16 @@ namespace CISCsim
 
                 instr = this.dispatchBuffer.Dequeue(); // Remove the instruction from the dispatch buffer
 
-                // TODO: We found that we're able to dispatch this instruction.
+                // We found that we're able to dispatch this instruction.
                 // Move the Instruction into its reservation station, into the reorder buffer,
                 // and into the rename register file if needed
                 int robTag;
                 
                 robTag = dispatchToReorderBuffer(instr);
                 dispatchToReservationStation(instr, robTag);
+
+                // TODO: check to see if this instruction needs a rename register file entry
+                // and dispatch it to the rrf if it does.
             }
         }
 
@@ -65,9 +68,11 @@ namespace CISCsim
         ///  <returns>The tag of the entry used in the reorder buffer</returns>
         private int dispatchToReorderBuffer(Instruction instr)
         {
-            // TODO: implement this function
-            
-            return 0;
+            CPU.rob.addEntry(instr);
+
+            // TODO: We're using a queue for the ROB, so we don't really have a tag
+            // to the entries within it. Do we have to change this?
+            return -1;
         }
 
         /// <summary>

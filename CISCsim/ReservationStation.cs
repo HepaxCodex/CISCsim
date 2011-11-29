@@ -9,8 +9,7 @@ namespace CISCsim
     /// Represents a Reservation Station
     /// </summary>
     class ReservationStation
-    {
-        //TODO: Add Entries to the REservation Station
+    {\
         private int maxQueueSize;
 
         public Queue<ReservationStationEntry> buffer;
@@ -57,20 +56,74 @@ namespace CISCsim
 
         /// <summary>
         /// Puts the instruction into the reservation station, filling the entries
+        /// Note this does not check if ResStation is full, as that check is done at a higher level
         /// </summary>
         public void ReceiveInstruction(Instruction instr, int robTag)
         {
-            // TODO: 1) Create res station entry by checking ARF for instr's src1 and src2
-            // If ARF entry Busy = false, data is valid, put it in as opN, set validN true
-            // Else ARF entry Busy = true, take ARF tag to check RRF entry.
-            // If RRF entry valid = true, data is valid, put it in as opN, set validN true
-            // Else RRF entry valid = false, opN gets the RRF entry tag, set validN false
-            int src1 = instr.source1;
-            int src2 = instr.source2;
+            // The reservation station entry we're creating
+            ReservationStationEntry thisEntry;
+            
+            // The fields in the entry
+            int op1 = 0, op2 = 0;
+            bool valid1 = false, valid2 = false;
 
-            //instr.executionType.
+            SetUpOp(ref op1, ref valid1, instr.source1, instr.source1Imm);
+            SetUpOp(ref op2, ref valid2, instr.source2, instr.source2Imm);
 
-            //CPU.arf.regFile
-        }
+            thisEntry = new ReservationStationEntry(op1, valid1, op2, valid2, robTag);
+
+            this.buffer.Enqueue(thisEntry);
+        } // End ReceiveInstruction
+
+        /// <summary>
+        /// Sets the arguments op and valid for the reservation station entry
+        /// </summary>
+        private void SetUpOp(ref int op, ref bool valid, int source, bool imm)
+        {
+            // 1) If source is immediate, set it as op and valid = true
+            // 2) Else, check ARF for source
+            //    If ARF entry Busy = false, data is valid, put it in as opN, set validN true
+            // 3) Else ARF entry Busy = true, take ARF tag to check RRF entry.
+            // 4) If RRF entry valid = true, data is valid, put it in as opN, set validN true
+            // 5) Else RRF entry valid = false, opN gets the RRF entry tag, set validN false
+
+            // If the source is immediate, use it
+            if (imm == true)
+            {
+                op = source;
+                valid = true;
+
+                return;
+            }
+            else
+            {
+                // The source is a register, so if that register is busy, check the tag, otherwise use it
+                if (CPU.arf.regFile[source].busy == true)
+                {
+                    // This reg is busy, look for the data in the rename reg file
+                    int rrfTag = CPU.arf.regFile[source].tag;
+
+                    // If the rrf entry is valid, use it, otherwise, use rrfTag as the op
+                    if (CPU.rrf.rrfTable[rrfTag].valid == true)
+                    {
+                        op = CPU.rrf.rrfTable[rrfTag].data;
+                        valid = true;
+                        return;
+                    }
+                    else
+                    {
+                        op = rrfTag;
+                        valid = false;
+                        return;
+                    }
+                }
+                else
+                {
+                    op = CPU.arf.regFile[source].data;
+                    valid = true;
+                    return;
+                }
+            }
+        } // End SetUpOp
     }
 }
