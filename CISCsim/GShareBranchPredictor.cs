@@ -62,7 +62,10 @@ namespace CISCsim
             branchTargetBuffer = new List<int>();
 
             // Initialize the branch predictor table
-            branchPredictorTable.Initialize();
+            for (int i = 0; i < 512; i++)
+            {
+                this.branchPredictorTable[i] = new BranchPredictionSM();
+            }
         }
 
 

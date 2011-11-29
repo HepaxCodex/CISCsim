@@ -173,7 +173,6 @@ namespace CISCsim
                     actualResult = true;
                 }
 
-                // TODO: ANDREW: runtime error here. It looks like the table's not initialized
                 CPU.branchPredictor.updateBranchSM(instr.address, branchPrediction, actualResult);
 
                 return (branchPrediction == actualResult);
