@@ -15,7 +15,7 @@ namespace CISCsim
         /// <summary>
         /// Instruction currently Being operated on
         /// </summary>
-        public Instruction instr;
+        public ReservationStationEntry entry;
 
         /// <summary>
         /// Determines if the current Execution unit is in use
@@ -40,13 +40,13 @@ namespace CISCsim
         /// Loads an instruction into the Execution Unit
         /// </summary>
         /// <param name="_instr"></param>
-        public void LoadInstruction(Instruction _instr)
+        public void LoadInstruction(ReservationStationEntry _entry)
         {
-            this.instr = _instr;
+            this.entry = _entry;
             this.busy = true;
             Random rand = new Random();
 
-            switch (instr.executionType)
+            switch (entry.instr.executionType)
             {
                 case Instruction.ExecutionType.Branch :
                     this.remainingCycles = Config.branchExeLatency;
@@ -71,7 +71,7 @@ namespace CISCsim
             
 
             // Check to see if it is a memory instruction so we can add the delays
-            if (instr.executionType == Instruction.ExecutionType.Mem)
+            if (entry.instr.executionType == Instruction.ExecutionType.Mem)
             {
                 // Check to see if we missed level 1
                 if (rand.Next(100) < Config.level1CacheDataMissPercent)

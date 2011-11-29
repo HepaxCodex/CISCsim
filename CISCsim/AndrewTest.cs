@@ -34,37 +34,6 @@ namespace CISCsim
             CPU.decodeStage.runCycle();
             CPU.fetchStage.Fetch();
 
-
-            /*
-            testDecode.testRemoveInstruction(); //
-            testDecode.testRemoveInstruction(); // Represents Decode.RunTest
-            testDecode.testRemoveInstruction(); //
-
-            
-            fetchStage.Fetch();
-            //CycleCleanup.fetch2Decode(testFetch, testDecode);
-
-            testDecode.testRemoveInstruction(); // Represents Decode.RunTest
-            testDecode.testRemoveInstruction(); //
-
-            
-            fetchStage.Fetch();
-            //CycleCleanup.fetch2Decode(testFetch, testDecode);
-
-            testDecode.testRemoveInstruction(); //
-
-            
-            fetchStage.Fetch();
-            //CycleCleanup.fetch2Decode(testFetch, testDecode);
-
-            testDecode.testRemoveInstruction(); //
-            testDecode.testRemoveInstruction(); // Represents Decode.RunTest
-            testDecode.testRemoveInstruction(); //
-
-            
-            fetchStage.Fetch();
-            //CycleCleanup.fetch2Decode(testFetch, testDecode);
-             * */
         }
     }
 }

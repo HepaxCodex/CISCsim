@@ -53,7 +53,7 @@ namespace CISCsim
             if (this.integerStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry = this.integerStation.buffer.Peek();
-                if (CPU.executeStage.AttemptToIssue(entry))
+                if (CPU.executeStage.canIssue(entry))
                 {
                     // It could execute, remove it from the reservation station
                     entry = this.integerStation.buffer.Dequeue();
@@ -78,7 +78,7 @@ namespace CISCsim
             if (this.fpStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry = this.fpStation.buffer.Peek();
-                if (CPU.executeStage.AttemptToIssue(entry))
+                if (CPU.executeStage.canIssue(entry))
                 {
                     // It could execute, remove it from the reservation station
                     entry = this.fpStation.buffer.Dequeue();
@@ -103,7 +103,7 @@ namespace CISCsim
             if (this.memStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry = this.memStation.buffer.Peek();
-                if (CPU.executeStage.AttemptToIssue(entry))
+                if (CPU.executeStage.canIssue(entry))
                 {
                     // It could execute, remove it from the reservation station
                     entry = this.memStation.buffer.Dequeue();
@@ -128,7 +128,7 @@ namespace CISCsim
             if (this.multDivStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry = this.multDivStation.buffer.Peek();
-                if (CPU.executeStage.AttemptToIssue(entry))
+                if (CPU.executeStage.canIssue(entry))
                 {
                     // It could execute, remove it from the reservation station
                     entry = this.multDivStation.buffer.Dequeue();
@@ -153,7 +153,7 @@ namespace CISCsim
             if (this.branchStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry = this.branchStation.buffer.Peek();
-                if (CPU.executeStage.AttemptToIssue(entry))
+                if (CPU.executeStage.canIssue(entry))
                 {
                     // It could execute, remove it from the reservation station
                     entry = this.branchStation.buffer.Dequeue();
