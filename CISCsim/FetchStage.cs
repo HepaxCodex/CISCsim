@@ -18,13 +18,6 @@ namespace CISCsim
         // which ones can move and update fetchBufferIndexValid appropriately
 
         /// <summary>
-        /// Notes that a branch was mispredicted
-        /// 
-        /// Fetch Stage will wait until the branch is executed before continueing
-        /// </summary>
-        bool branchMispredictWait = false;
-
-        /// <summary>
         /// Holds the instructions fetched from the instruction trace
         /// </summary>
         //private Instruction[] fetchBuffer;

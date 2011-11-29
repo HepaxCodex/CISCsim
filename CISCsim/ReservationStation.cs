@@ -9,7 +9,7 @@ namespace CISCsim
     /// Represents a Reservation Station
     /// </summary>
     class ReservationStation
-    {\
+    {
         private int maxQueueSize;
 
         public Queue<ReservationStationEntry> buffer;
