@@ -75,7 +75,7 @@ namespace CISCsim
                 // We didn't miss the cache last time, so we have to see if we miss this time
                 if (rand.Next(100) < Config.level1CacheInstrMissPercent)
                 {
-                    Statistics.level1CacheMisses++;
+                    Statistics.level1InstrCacheMisses++;
 
                     //We did miss cache; set cacheMiss = true and the appropriate cacheMissCountdown
                     this.cacheMissed = true;
@@ -173,6 +173,7 @@ namespace CISCsim
                     actualResult = true;
                 }
 
+                // TODO: ANDREW: runtime error here. It looks like the table's not initialized
                 CPU.branchPredictor.updateBranchSM(instr.address, branchPrediction, actualResult);
 
                 return (branchPrediction == actualResult);

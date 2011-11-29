@@ -29,7 +29,5 @@ namespace CISCsim
         public static int fpExeLatency     = 5;
         public static int memExeLatency    = 2;
         public static int branchExeLatency = 1;
-
-
     }
 }

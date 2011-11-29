@@ -21,7 +21,7 @@ namespace CISCsim
         /// <returns>true if full, false otherwise</returns>
         public bool isFull()
         {
-            return (Config.numReorderBufferEntries - this.buffer.Count > 0 );
+            return (Config.numReorderBufferEntries - this.buffer.Count == 0 );
         }
 
         /// <summary>
@@ -48,6 +48,7 @@ namespace CISCsim
         public bool isNewEntryValid()
         {
             // Check if a branch instruction exists.
+            // TODO: ANDREW: runtime error here - something about a sequence not containing a matching type or something.
             if (buffer.First(entry => entry.instruction.executionType == Instruction.ExecutionType.Branch) == null)
                 return true;
             else

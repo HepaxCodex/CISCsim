@@ -9,25 +9,30 @@ namespace CISCsim
     {
         public static void RunTest()
         {
-            FetchStage fetchStage = new FetchStage();
-            DecodeStage decodeStage = new DecodeStage();
-            DispatchStage dispatchStage = new DispatchStage();
-            IssueStage issueStage = new IssueStage();
-            RenameRegisterFile rrf = new RenameRegisterFile();
-
             // First Cycle
-            dispatchStage.runCycle();
-            decodeStage.runCycle();
-            fetchStage.Fetch();
+            CPU.issueStage.runCycle();
+            CPU.dispatchStage.runCycle();
+            CPU.decodeStage.runCycle();
+            CPU.fetchStage.Fetch();
 
 
             // Second Cycle
-            dispatchStage.runCycle();
-            decodeStage.runCycle();
-            fetchStage.Fetch();
+            CPU.issueStage.runCycle();
+            CPU.dispatchStage.runCycle();
+            CPU.decodeStage.runCycle();
+            CPU.fetchStage.Fetch();
 
             // Third Cycle
-            dispatchStage.runCycle();
+            CPU.issueStage.runCycle();
+            CPU.dispatchStage.runCycle();
+            CPU.decodeStage.runCycle();
+            CPU.fetchStage.Fetch();
+
+            // Fourth Cycle
+            CPU.issueStage.runCycle();
+            CPU.dispatchStage.runCycle();
+            CPU.decodeStage.runCycle();
+            CPU.fetchStage.Fetch();
 
 
             /*

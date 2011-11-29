@@ -55,12 +55,20 @@ namespace CISCsim
                 
                 robTag = dispatchToReorderBuffer(instr);
                 dispatchToReservationStation(instr, robTag);
-
-                // TODO: check to see if this instruction needs a rename register file entry
-                // and dispatch it to the rrf if it does.
+                dispatchToRenameRegisterFile(instr);
             }
         }
 
+        /// <summary>
+        /// Puts the instruction into the rename register file
+        /// </summary>
+        private void dispatchToRenameRegisterFile(Instruction instr)
+        {
+            if (instr.dest != null)
+            {
+                CPU.rrf.addEntry(instr);
+            }
+        }
 
         /// <summary>
         /// Puts the instruction into the reorder buffer

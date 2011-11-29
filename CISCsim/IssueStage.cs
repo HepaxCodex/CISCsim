@@ -28,5 +28,146 @@ namespace CISCsim
             this.branchStation = new ReservationStation();
         }
 
+        /// <summary>
+        /// Runs an IssueStage cycle
+        /// </summary>
+        public void runCycle()
+        {
+            // Attempt issue of an instruction in each of the reservation stations
+            AttemptIntegerIssue();
+            AttemptFloatingIssue();
+            AttemptMemoryIssue();
+            AttemptMultDivIssue();
+            AttemptBranchIssue();
+        }
+
+        // TODO: ugh, these can all be a single AttemptIssue function that's passed a station...
+        // I'm tired though, so we can do that later if we want
+
+        /// <summary>
+        /// Attempts to issue integer reservation station entry to execution unit
+        /// <returns>true if it could execute, false if no execution unit was available</returns>
+        /// </summary>
+        private void AttemptIntegerIssue()
+        {
+            if (this.integerStation.buffer.Count > 0)
+            {
+                ReservationStationEntry entry = this.integerStation.buffer.Peek();
+                if (CPU.executeStage.AttemptToIssue(entry))
+                {
+                    // It could execute, remove it from the reservation station
+                    entry = this.integerStation.buffer.Dequeue();
+                }
+                else
+                {
+                    Statistics.integerExecutionUnitsFull++;
+                }
+            }
+            else
+            {
+                Statistics.integerExecutionUnitsEmpty++;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to issue floating point reservation station entry to execution unit
+        /// <returns>true if it could execute, false if no execution unit was available</returns>
+        /// </summary>
+        private void AttemptFloatingIssue()
+        {
+            if (this.fpStation.buffer.Count > 0)
+            {
+                ReservationStationEntry entry = this.fpStation.buffer.Peek();
+                if (CPU.executeStage.AttemptToIssue(entry))
+                {
+                    // It could execute, remove it from the reservation station
+                    entry = this.fpStation.buffer.Dequeue();
+                }
+                else
+                {
+                    Statistics.floatingExecutionUnitsFull++;
+                }
+            }
+            else
+            {
+                Statistics.floatingExecutionUnitsEmpty++;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to issue memory reservation station entry to execution unit
+        /// <returns>true if it could execute, false if no execution unit was available</returns>
+        /// </summary>
+        private void AttemptMemoryIssue()
+        {
+            if (this.memStation.buffer.Count > 0)
+            {
+                ReservationStationEntry entry = this.memStation.buffer.Peek();
+                if (CPU.executeStage.AttemptToIssue(entry))
+                {
+                    // It could execute, remove it from the reservation station
+                    entry = this.memStation.buffer.Dequeue();
+                }
+                else
+                {
+                    Statistics.memoryExecutionUnitsFull++;
+                }
+            }
+            else
+            {
+                Statistics.memoryExecutionUnitsEmpty++;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to issue mult/div reservation station entry to execution unit
+        /// <returns>true if it could execute, false if no execution unit was available</returns>
+        /// </summary>
+        private void AttemptMultDivIssue()
+        {
+            if (this.multDivStation.buffer.Count > 0)
+            {
+                ReservationStationEntry entry = this.multDivStation.buffer.Peek();
+                if (CPU.executeStage.AttemptToIssue(entry))
+                {
+                    // It could execute, remove it from the reservation station
+                    entry = this.multDivStation.buffer.Dequeue();
+                }
+                else
+                {
+                    Statistics.multDivExecutionUnitsFull++;
+                }
+            }
+            else
+            {
+                Statistics.multDivExecutionUnitsEmpty++;
+            }
+        }
+
+        /// <summary>
+        /// Attempts to issue branch reservation station entry to execution unit
+        /// <returns>true if it could execute, false if no execution unit was available</returns>
+        /// </summary>
+        private void AttemptBranchIssue()
+        {
+            if (this.branchStation.buffer.Count > 0)
+            {
+                ReservationStationEntry entry = this.branchStation.buffer.Peek();
+                if (CPU.executeStage.AttemptToIssue(entry))
+                {
+                    // It could execute, remove it from the reservation station
+                    entry = this.branchStation.buffer.Dequeue();
+                }
+                else
+                {
+                    Statistics.branchExecutionUnitsFull++;
+                }
+            }
+            else
+            {
+                Statistics.branchExecutionUnitsEmpty++;
+            }
+        }
+
     }
 }
