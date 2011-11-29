@@ -41,6 +41,12 @@ namespace CISCsim
         /// Entry in the Reorder Buffer
         /// </summary>
         public int robTag;
+
+        /// <summary>
+        /// The instruction waiting to be executed
+        /// This is only included here for ease of use with the Execution Stage
+        /// </summary>
+        public Instruction instr;
         
         /// <summary>
         /// Constructor
@@ -59,13 +65,14 @@ namespace CISCsim
         /// <summary>
         /// Constructor using initializers
         /// </summary>
-        public ReservationStationEntry(int op1, bool valid1, int op2, bool valid2, int robTag)
+        public ReservationStationEntry(int op1, bool valid1, int op2, bool valid2, int robTag, Instruction instr)
         {
             this.op1 = op1;
             this.valid1 = valid1;
             this.op2 = op2;
             this.valid2 = valid2;
             this.robTag = robTag;
+            this.instr = instr;
 
             this.ready = (this.valid1 && this.valid2);
 

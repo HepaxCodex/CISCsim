@@ -58,10 +58,12 @@ namespace CISCsim
                 // Check to see if we missed level 1
                 if (rand.Next(100) < Config.level1CacheDataMissPercent)
                 {
+                    Statistics.level1DataCacheMisses++;
                     this.remainingCycles += Config.level1CacheMissPenalty;
                     // Check to see if we missed level 2
                     if (rand.Next(100) < Config.level2CacheMissPercent)
                     {
+                        Statistics.level2CacheMisses++;
                         this.remainingCycles += Config.level2CacheMissPenalty;
                     }
                 }

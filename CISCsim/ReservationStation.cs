@@ -70,7 +70,7 @@ namespace CISCsim
             SetUpOp(ref op1, ref valid1, instr.source1, instr.source1Imm);
             SetUpOp(ref op2, ref valid2, instr.source2, instr.source2Imm);
 
-            thisEntry = new ReservationStationEntry(op1, valid1, op2, valid2, robTag);
+            thisEntry = new ReservationStationEntry(op1, valid1, op2, valid2, robTag, instr);
 
             this.buffer.Enqueue(thisEntry);
         } // End ReceiveInstruction
