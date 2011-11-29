@@ -50,6 +50,7 @@ namespace CISCsim
             // Data stays null until it's updated by an execution result
         }
 
+
         public int findFirstEmptySlot()
         {
             return Array.IndexOf(rrfTable, rrfTable.First(entry => entry.busy == false));

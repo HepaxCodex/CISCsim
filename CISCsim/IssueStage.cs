@@ -52,11 +52,15 @@ namespace CISCsim
         {
             if (this.integerStation.buffer.Count > 0)
             {
+                // TODO : Check to make sure that the inputs are valid (this must be done for all AttempIssue functions
+
+                // TODO: This can return null
                 ReservationStationEntry entry = this.integerStation.buffer.Peek();
                 if (CPU.executeStage.canIssue(entry))
                 {
                     // It could execute, remove it from the reservation station
                     entry = this.integerStation.buffer.Dequeue();
+                    CPU.executeStage.acceptIssue(entry); // now move the actual item
                 }
                 else
                 {

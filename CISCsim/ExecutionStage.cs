@@ -67,6 +67,8 @@ namespace CISCsim
                 if (unit.runCycle())
                 {
                     // TODO: Move the Cycle / Update the RRF
+                    // The the reservation station entry should hold the RRF entry index so taht we know which one to update
+
 
                     CPU.rob.executionFinished(unit.entry);
                     // Tell Everyone that the reservation station entry is now available
