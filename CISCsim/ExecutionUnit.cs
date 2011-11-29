@@ -18,14 +18,32 @@ namespace CISCsim
         public Instruction instr;
 
         /// <summary>
+        /// Determines if the current Execution unit is in use
+        /// </summary>
+        public bool busy;
+
+        /// <summary>
         /// The remaining number of cycles before the instruction is completed
         /// </summary>
         private int remainingCycles;
 
+        
 
-        public ExecutionUnit(Instruction _instr)
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public ExecutionUnit()
+        {
+        }
+
+        /// <summary>
+        /// Loads an instruction into the Execution Unit
+        /// </summary>
+        /// <param name="_instr"></param>
+        public void LoadInstruction(Instruction _instr)
         {
             this.instr = _instr;
+            this.busy = true;
             Random rand = new Random();
 
             switch (instr.executionType)
@@ -76,11 +94,18 @@ namespace CISCsim
         /// <returns>True if the instruction completes in this cycle</returns>
         public bool runCycle()
         {
-            this.remainingCycles--;
-            if (this.remainingCycles == 0)
-                return true;
-            else
-                return false;
+            if (this.busy)
+            {
+                this.remainingCycles--;
+                if (this.remainingCycles == 0)
+                {
+                    this.busy = false;
+                    return true;
+                }
+                else
+                    return false;
+            }
+            return false;
         }
 
         
