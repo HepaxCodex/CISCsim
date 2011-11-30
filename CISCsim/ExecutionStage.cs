@@ -34,13 +34,10 @@ namespace CISCsim
             }
         }
 
-
-        // TODO: Add the run cycle;
         // For every busy Unit do a RunCycle.  If it returns true the instruciton is finished
         public void runCycle()
         {
             foreach (ExecutionUnit unit in this.memUnits)     { handleUnitCycle(unit); }
-
             foreach (ExecutionUnit unit in this.intUnits)     { handleUnitCycle(unit); }
             foreach (ExecutionUnit unit in this.fpUnits)      { handleUnitCycle(unit); }
             foreach (ExecutionUnit unit in this.multDivUnits) { handleUnitCycle(unit); }

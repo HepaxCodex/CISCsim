@@ -181,7 +181,7 @@ namespace CISCsim
                     if (CPU.issueStage.branchStation.isFull()) return false;
                     break;
                 case Instruction.ExecutionType.Nop:
-                    //TODO: Decide what to do with Nop in Decode Stage
+                    // Return True, as we do nto care about Nop
                     break;
                 default:
                     System.Console.WriteLine("Decode Stage found Unknown Instruction Execution Type");

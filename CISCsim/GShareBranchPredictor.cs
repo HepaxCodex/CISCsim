@@ -31,7 +31,6 @@ namespace CISCsim
         // Private Data //
         //////////////////
 
-        //TODO: What type should this be?  
         /// <summary>
         /// Represents the Path History to the current branch
         /// </summary>
