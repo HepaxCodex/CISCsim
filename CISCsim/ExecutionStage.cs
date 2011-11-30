@@ -67,6 +67,15 @@ namespace CISCsim
                     // The the reservation station entry should hold the RRF entry index so taht we know which one to update
                     int rrfEntryIndex = CPU.rob.executionFinished(unit.entry);
                     CPU.rrf.executionFinished(rrfEntryIndex);
+
+                    // Update the Reservation Stations
+                    updateReservationStation(rrfEntryIndex, CPU.issueStage.branchStation);
+                    updateReservationStation(rrfEntryIndex, CPU.issueStage.fpStation);
+                    updateReservationStation(rrfEntryIndex, CPU.issueStage.integerStation);
+                    updateReservationStation(rrfEntryIndex, CPU.issueStage.memStation);
+                    updateReservationStation(rrfEntryIndex, CPU.issueStage.multDivStation);
+
+
                     
                     // Tell Everyone that the reservation station entry is now available
                     unit.entry.busy = false;
@@ -74,6 +83,25 @@ namespace CISCsim
                 }
             }
             return false;
+        }
+
+        private void updateReservationStation(int rrfEntryIndex, ReservationStation resStation)
+        {
+            foreach (ReservationStationEntry rsEntry in resStation.buffer)
+            {
+                if (rsEntry.valid1 == false && rsEntry.op1 == rrfEntryIndex)
+                {
+                    rsEntry.op1 = rsEntry.instr.source1;
+                    rsEntry.valid1 = true;
+                }
+                if (rsEntry.valid2 == false && rsEntry.op2 == rrfEntryIndex)
+                {
+                    rsEntry.op2 = rsEntry.instr.source2;
+                    rsEntry.valid2 = true;
+                }
+            }
+
+
         }
 
         /// <summary>

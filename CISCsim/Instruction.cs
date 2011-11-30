@@ -247,6 +247,8 @@ namespace CISCsim
                             //dest is the given reg
                             this.dest = getIntFromRegisterString(tokens[0]);
                             this.destString = tokens[0];
+                                                        this.source2Imm = true;
+                            this.source3Imm = true;
                             break;
                         default:
                             //all the other 1-arg instrs use a reg or immediate as source w/out dests

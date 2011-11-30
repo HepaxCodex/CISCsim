@@ -50,10 +50,11 @@ namespace CISCsim
             // at a higher level
             for (int i = 0; i < Config.numRenamingTableEntries; i++)
             {
-                if (rrfTable[i].busy == false)
+                if (this.rrfTable[i].busy == false)
                 {
                     emptySlot = rrfTable[i];
                     rrfTag = i;
+                    break;
                 }
             }
 
