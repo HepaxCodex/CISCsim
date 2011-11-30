@@ -99,6 +99,10 @@ namespace CISCsim
                     rsEntry.op2 = rsEntry.instr.source2;
                     rsEntry.valid2 = true;
                 }
+                if (rsEntry.valid1 == true && rsEntry.valid2 == true)
+                {
+                    rsEntry.ready = true;
+                }
             }
 
 

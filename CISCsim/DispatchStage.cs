@@ -103,6 +103,7 @@ namespace CISCsim
                 case Instruction.ExecutionType.FloatingPoint:
                     CPU.issueStage.fpStation.ReceiveInstruction(instr, robTag);
                     break;
+                case Instruction.ExecutionType.Logical:
                 case Instruction.ExecutionType.Integer:
                     CPU.issueStage.integerStation.ReceiveInstruction(instr, robTag);
                     break;
