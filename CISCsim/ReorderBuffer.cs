@@ -39,6 +39,7 @@ namespace CISCsim
                 newEntry.instruction = instr;
                 newEntry.valid = this.isNewEntryValid();
                 newEntry.renameReg = CPU.rrf.findFirstEmptySlot();
+                this.buffer.Enqueue(newEntry);
             }
         }
 
