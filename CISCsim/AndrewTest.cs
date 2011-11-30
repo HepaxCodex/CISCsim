@@ -42,6 +42,13 @@ namespace CISCsim
             CPU.decodeStage.runCycle();
             CPU.fetchStage.Fetch();
 
+            // Fifth Cycle (executes something)
+            CPU.executeStage.runCycle();
+            CPU.issueStage.runCycle();
+            CPU.dispatchStage.runCycle();
+            CPU.decodeStage.runCycle();
+            CPU.fetchStage.Fetch();
+
         }
     }
 }

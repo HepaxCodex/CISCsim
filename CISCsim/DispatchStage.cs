@@ -64,9 +64,16 @@ namespace CISCsim
         /// </summary>
         private void dispatchToRenameRegisterFile(Instruction instr)
         {
-            if (instr.dest != null)
+            if (instr.dest != -1)
             {
-                CPU.rrf.addEntry(instr);
+                int rrfTag;
+
+                // Add entry to Rename Register File
+                rrfTag = CPU.rrf.addEntry(instr);
+
+                // Update the ARF entry of the destination to busy and its tag to point to the RRF entry
+                CPU.arf.regFile[instr.dest].busy = true;
+                CPU.arf.regFile[instr.dest].tag = rrfTag;
             }
         }
 
