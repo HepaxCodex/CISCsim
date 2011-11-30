@@ -228,6 +228,8 @@ namespace CISCsim
                             this.source2 = 64;
                             this.source2String = "fcc";
                             this.source2Imm = false;
+                            //br instrs have no dest
+                            this.dest = -1;
                             break;
                         case "mfhi":
                         case "mflo":
@@ -240,10 +242,11 @@ namespace CISCsim
                             this.destString = tokens[0];
                             break;
                         default:
-                            //all the other 1-arg instrs a reg or immediate as source w/out dests
+                            //all the other 1-arg instrs use a reg or immediate as source w/out dests
                             this.source1 = getIntFromRegisterString(tokens[0]);
                             this.source1String = tokens[0];
                             this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                            this.dest = -1;
                             break;
                     }
                     break;
@@ -271,6 +274,8 @@ namespace CISCsim
                                 this.source3 = getIntFromRegisterString(lastargs[1]);
                                 this.source3String = lastargs[1];
                                 this.source3Imm = false;
+                                //store words have no register destination
+                                this.dest = -1;
                                 break;
                             default:
                                 //the default is normal: dest,src1(src2)
@@ -302,6 +307,8 @@ namespace CISCsim
                                 this.source2 = getIntFromRegisterString(tokens[1]);
                                 this.source2String = tokens[1];
                                 this.source2Imm = true;
+                                //branch instrs don't have a dest
+                                this.dest = -1;
                                 break;
                             case "mult":
                             case "div":
@@ -366,6 +373,8 @@ namespace CISCsim
                             this.source3 = getIntFromRegisterString(tokens[2]);
                             this.source3String = tokens[2];
                             this.source3Imm = true;
+                            //branch instrs don't have a dest
+                            this.dest = -1;
                             break;
                         default:
                             //the default is the norm: dst,src1,src2

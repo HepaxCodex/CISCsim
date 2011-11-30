@@ -39,15 +39,31 @@ namespace CISCsim
         /// Adds an entry to the rrfTable
         /// </summary>
         /// <param name="instr">Instruction to be added to the rrfTable</param>
-        public void addEntry(Instruction instr)
+        /// <returns>The index (tag) of where it was added</returns>
+        public int addEntry(Instruction instr)
         {
-            RRFEntry emptySlot;
-            emptySlot = rrfTable.First(entry => entry.busy == false);
+            int rrfTag = -1;
+            // We had to create one here because we use emptySlot below
+            RRFEntry emptySlot = new RRFEntry();
+
+            // Note we're guaranteed an entry is open because we called spaceAvailable
+            // at a higher level
+            for (int i = 0; i < Config.numRenamingTableEntries; i++)
+            {
+                if (rrfTable[i].busy == false)
+                {
+                    emptySlot = rrfTable[i];
+                    rrfTag = i;
+                }
+            }
+
             emptySlot.busy = true;
             emptySlot.valid = false;
             // There must be a destination if this instruction requires an RRF entry
             emptySlot.destReg = instr.dest;
             // Data stays null until it's updated by an execution result
+
+            return rrfTag;
         }
 
 
