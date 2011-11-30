@@ -87,10 +87,10 @@ namespace CISCsim
         /// </summary>
         private void AttemptFloatingIssue()
         {
-            if (this.fpStation.buffer.Count > 0)
+            if (Config.numReservationStationEntries - this.fpStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
-                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+                entry = this.fpStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
 
                 if (entry != null)
                 {
@@ -120,10 +120,10 @@ namespace CISCsim
         /// </summary>
         private void AttemptMemoryIssue()
         {
-            if (this.memStation.buffer.Count > 0)
+            if (Config.numReservationStationEntries - this.memStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
-                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+                entry = this.memStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
 
                 if (entry != null)
                 {
@@ -153,10 +153,10 @@ namespace CISCsim
         /// </summary>
         private void AttemptMultDivIssue()
         {
-            if (this.multDivStation.buffer.Count > 0)
+            if (Config.numReservationStationEntries - this.multDivStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
-                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+                entry = this.multDivStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
 
                 if (entry != null)
                 {
@@ -186,10 +186,10 @@ namespace CISCsim
         /// </summary>
         private void AttemptBranchIssue()
         {
-            if (this.branchStation.buffer.Count > 0)
+            if (Config.numReservationStationEntries - this.branchStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
-                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+                entry = this.branchStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
 
                 if (entry != null)
                 {

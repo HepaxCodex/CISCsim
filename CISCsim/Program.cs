@@ -12,30 +12,25 @@ namespace CISCsim
             System.Console.WriteLine("Hello World\n");
 
             //BenTest.RunTest();
-            AndrewTest.RunTest();
+            //AndrewTest.RunTest();
+
+            while (CPU.lastInstructionCompleted == false)
+            {
+                CPU.completeStage.runCycle();
+                CPU.executeStage.runCycle();
+                CPU.issueStage.runCycle();
+                CPU.dispatchStage.runCycle();
+                CPU.decodeStage.runCycle();
+                CPU.fetchStage.Fetch();
+                System.Console.WriteLine("PC {0}", CPU.pc);
+            }
+
 
             System.Console.WriteLine("Press Any Key To Exit\n");
             System.Console.Read();
         }
 
 
-        /// <summary>
-        /// runCycle Prototype ... Not Complete
-        /// </summary>
-        public static void runCycle()
-        {
-            //fetchStage.Fetch(); //TODO: This should be fetchStage.RunCycle();
-            //decodeStage.RunCycle();
-            //issueStage.RunCycle();
-            //executeStage.RunCycle();
-            //completeStage.RunCycle();
-            //writeBageStage.RunCycle();
-
-            // CycleCleanup.fetch2decode();
-            // CycleCleanup.decode2issue();
-            // CycleCleanup.issue2execute();
-
-        }
 
 
     }

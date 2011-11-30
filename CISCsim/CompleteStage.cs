@@ -21,8 +21,9 @@ namespace CISCsim
                         {
                             arfEntry.busy = false;
                         }
-                        CPU.rrf.rrfTable[robEntry.renameReg].busy = false;
                     }
+                    CPU.rrf.rrfTable[robEntry.renameReg].busy = false;
+                    Statistics.instructionsCompleted++;
                 }
             }
         }

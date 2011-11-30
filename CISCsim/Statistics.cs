@@ -33,5 +33,7 @@ namespace CISCsim
         public static int multDivExecutionUnitsEmpty  = 0;
         public static int memoryExecutionUnitsEmpty   = 0;
         public static int branchExecutionUnitsEmpty   = 0;
+
+        public static int instructionsCompleted = 0;
     }
 }

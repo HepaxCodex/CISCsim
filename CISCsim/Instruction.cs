@@ -92,6 +92,7 @@ namespace CISCsim
                 return false;
             }
 
+            // TODO: Check for Jumps in the Branch Execution... if it is a jump do not usestall
             return !(this.instruction == "j" || this.instruction == "jal" ||
                     this.instruction == "jr" || this.instruction == "jalr");
         }
@@ -252,6 +253,8 @@ namespace CISCsim
                             this.source1 = getIntFromRegisterString(tokens[0]);
                             this.source1String = tokens[0];
                             this.source1Imm = !(this.source1String.StartsWith("r") || this.source1String.StartsWith("f"));
+                            this.source2Imm = true;
+                            this.source3Imm = true;
                             this.dest = -1;
                             break;
                     }

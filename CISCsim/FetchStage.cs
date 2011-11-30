@@ -112,8 +112,9 @@ namespace CISCsim
                 if (line != null)
                 {
                     numInstructionsRead++;
-
-                    fetchBuffer.Enqueue(new Instruction(line));
+                    Instruction newInstruction = new Instruction(line);
+                    CPU.pc = newInstruction.address;
+                    fetchBuffer.Enqueue(newInstruction);
                 }
                 else
                 {
