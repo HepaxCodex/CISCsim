@@ -52,19 +52,24 @@ namespace CISCsim
         {
             if (this.integerStation.buffer.Count > 0)
             {
-                // TODO : Check to make sure that the inputs are valid (this must be done for all AttempIssue functions
+                // TODO: This can return null - what can? the peek? I check before to make sure .Count > 0
+                // So I changed this from a .Peek() to a FirstOrDefault because as long as instructions are ready
+                // in the reservation station, there's no reason to make them wait behind other instructions
+                ReservationStationEntry entry;
+                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
 
-                // TODO: This can return null
-                ReservationStationEntry entry = this.integerStation.buffer.Peek();
-                if (CPU.executeStage.canIssue(entry))
+                if (entry != null)
                 {
-                    // It could execute, remove it from the reservation station
-                    entry = this.integerStation.buffer.Dequeue();
-                    CPU.executeStage.acceptIssue(entry); // now move the actual item
-                }
-                else
-                {
-                    Statistics.integerExecutionUnitsFull++;
+                    if (CPU.executeStage.canIssue(entry))
+                    {
+                        // It could execute, remove it from the reservation station
+                        entry = this.integerStation.buffer.Dequeue();
+                        CPU.executeStage.acceptIssue(entry); // now move the actual item
+                    }
+                    else
+                    {
+                        Statistics.integerExecutionUnitsFull++;
+                    }
                 }
             }
             else
@@ -81,15 +86,20 @@ namespace CISCsim
         {
             if (this.fpStation.buffer.Count > 0)
             {
-                ReservationStationEntry entry = this.fpStation.buffer.Peek();
-                if (CPU.executeStage.canIssue(entry))
+                ReservationStationEntry entry;
+                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+
+                if (entry != null)
                 {
-                    // It could execute, remove it from the reservation station
-                    entry = this.fpStation.buffer.Dequeue();
-                }
-                else
-                {
-                    Statistics.floatingExecutionUnitsFull++;
+                    if (CPU.executeStage.canIssue(entry))
+                    {
+                        // It could execute, remove it from the reservation station
+                        entry = this.fpStation.buffer.Dequeue();
+                    }
+                    else
+                    {
+                        Statistics.floatingExecutionUnitsFull++;
+                    }
                 }
             }
             else
@@ -106,15 +116,20 @@ namespace CISCsim
         {
             if (this.memStation.buffer.Count > 0)
             {
-                ReservationStationEntry entry = this.memStation.buffer.Peek();
-                if (CPU.executeStage.canIssue(entry))
+                ReservationStationEntry entry;
+                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+
+                if (entry != null)
                 {
-                    // It could execute, remove it from the reservation station
-                    entry = this.memStation.buffer.Dequeue();
-                }
-                else
-                {
-                    Statistics.memoryExecutionUnitsFull++;
+                    if (CPU.executeStage.canIssue(entry))
+                    {
+                        // It could execute, remove it from the reservation station
+                        entry = this.memStation.buffer.Dequeue();
+                    }
+                    else
+                    {
+                        Statistics.memoryExecutionUnitsFull++;
+                    }
                 }
             }
             else
@@ -131,15 +146,20 @@ namespace CISCsim
         {
             if (this.multDivStation.buffer.Count > 0)
             {
-                ReservationStationEntry entry = this.multDivStation.buffer.Peek();
-                if (CPU.executeStage.canIssue(entry))
+                ReservationStationEntry entry;
+                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+
+                if (entry != null)
                 {
-                    // It could execute, remove it from the reservation station
-                    entry = this.multDivStation.buffer.Dequeue();
-                }
-                else
-                {
-                    Statistics.multDivExecutionUnitsFull++;
+                    if (CPU.executeStage.canIssue(entry))
+                    {
+                        // It could execute, remove it from the reservation station
+                        entry = this.multDivStation.buffer.Dequeue();
+                    }
+                    else
+                    {
+                        Statistics.multDivExecutionUnitsFull++;
+                    }
                 }
             }
             else
@@ -156,15 +176,20 @@ namespace CISCsim
         {
             if (this.branchStation.buffer.Count > 0)
             {
-                ReservationStationEntry entry = this.branchStation.buffer.Peek();
-                if (CPU.executeStage.canIssue(entry))
+                ReservationStationEntry entry;
+                entry = this.integerStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
+
+                if (entry != null)
                 {
-                    // It could execute, remove it from the reservation station
-                    entry = this.branchStation.buffer.Dequeue();
-                }
-                else
-                {
-                    Statistics.branchExecutionUnitsFull++;
+                    if (CPU.executeStage.canIssue(entry))
+                    {
+                        // It could execute, remove it from the reservation station
+                        entry = this.branchStation.buffer.Dequeue();
+                    }
+                    else
+                    {
+                        Statistics.branchExecutionUnitsFull++;
+                    }
                 }
             }
             else
