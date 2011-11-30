@@ -44,6 +44,7 @@ namespace CISCsim
         // TODO: ugh, these can all be a single AttemptIssue function that's passed a station...
         // I'm tired though, so we can do that later if we want
 
+
         /// <summary>
         /// Attempts to issue integer reservation station entry to execution unit
         /// <returns>true if it could execute, false if no execution unit was available</returns>
@@ -63,8 +64,10 @@ namespace CISCsim
                     if (CPU.executeStage.canIssue(entry))
                     {
                         // It could execute, remove it from the reservation station
-                        entry = this.integerStation.buffer.Dequeue();
-                        CPU.executeStage.acceptIssue(entry); // now move the actual item
+                        if (this.integerStation.buffer.Remove(entry))
+                            CPU.executeStage.acceptIssue(entry); // now move the actual item
+                        else
+                            System.Console.WriteLine("ERROR: attemptIssue Tried To remove an entry from the reservation did not exist");
                     }
                     else
                     {
@@ -94,7 +97,10 @@ namespace CISCsim
                     if (CPU.executeStage.canIssue(entry))
                     {
                         // It could execute, remove it from the reservation station
-                        entry = this.fpStation.buffer.Dequeue();
+                        if (this.fpStation.buffer.Remove(entry))
+                            CPU.executeStage.acceptIssue(entry); // now move the actual item
+                        else
+                            System.Console.WriteLine("ERROR: attemptIssue Tried To remove an entry from the reservation did not exist");
                     }
                     else
                     {
@@ -124,7 +130,10 @@ namespace CISCsim
                     if (CPU.executeStage.canIssue(entry))
                     {
                         // It could execute, remove it from the reservation station
-                        entry = this.memStation.buffer.Dequeue();
+                        if (this.memStation.buffer.Remove(entry))
+                            CPU.executeStage.acceptIssue(entry); // now move the actual item
+                        else
+                            System.Console.WriteLine("ERROR: attemptIssue Tried To remove an entry from the reservation did not exist");
                     }
                     else
                     {
@@ -154,7 +163,10 @@ namespace CISCsim
                     if (CPU.executeStage.canIssue(entry))
                     {
                         // It could execute, remove it from the reservation station
-                        entry = this.multDivStation.buffer.Dequeue();
+                        if (this.multDivStation.buffer.Remove(entry))
+                            CPU.executeStage.acceptIssue(entry); // now move the actual item
+                        else
+                            System.Console.WriteLine("ERROR: attemptIssue Tried To remove an entry from the reservation did not exist");
                     }
                     else
                     {
@@ -184,7 +196,10 @@ namespace CISCsim
                     if (CPU.executeStage.canIssue(entry))
                     {
                         // It could execute, remove it from the reservation station
-                        entry = this.branchStation.buffer.Dequeue();
+                        if (this.branchStation.buffer.Remove(entry))
+                            CPU.executeStage.acceptIssue(entry); // now move the actual item
+                        else
+                            System.Console.WriteLine("ERROR: attemptIssue Tried To remove an entry from the reservation did not exist");
                     }
                     else
                     {

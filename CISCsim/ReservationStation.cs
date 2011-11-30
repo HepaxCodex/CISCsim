@@ -10,17 +10,17 @@ namespace CISCsim
     /// </summary>
     class ReservationStation
     {
-        private int maxQueueSize;
+        private int maxListSize;
 
-        public Queue<ReservationStationEntry> buffer;
+        public List<ReservationStationEntry> buffer;
 
         /// <summary>
         /// Default Constructor: Creates a ReservationStation in the size defined by the Config
         /// </summary>
         public ReservationStation()
         {
-            this.buffer = new Queue<ReservationStationEntry>();
-            this.maxQueueSize = Config.numReservationStationEntries;
+            this.buffer = new List<ReservationStationEntry>();
+            this.maxListSize = Config.numReservationStationEntries;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace CISCsim
         /// <param name="numReservationStations">Desired number of Entries</param>
         public ReservationStation(int numReservationStations)
         {
-            this.maxQueueSize = numReservationStations;
+            this.maxListSize = numReservationStations;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CISCsim
         /// <returns>True if full, false otherwise</returns>
         public bool isFull()
         {
-            return (this.maxQueueSize - this.buffer.Count == 0);
+            return (this.maxListSize - this.buffer.Count == 0);
 
             /*This method is technically correct but unnecessary in the implimentation
             bool full = true; // Start off true until we find a non-"busy" entry
@@ -72,7 +72,7 @@ namespace CISCsim
 
             thisEntry = new ReservationStationEntry(op1, valid1, op2, valid2, robTag, instr);
 
-            this.buffer.Enqueue(thisEntry);
+            this.buffer.Add(thisEntry);
         } // End ReceiveInstruction
 
         /// <summary>
