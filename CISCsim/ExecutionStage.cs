@@ -65,9 +65,9 @@ namespace CISCsim
                 {
                     // TODO: Move the Cycle / Update the RRF
                     // The the reservation station entry should hold the RRF entry index so taht we know which one to update
-
-
-                    CPU.rob.executionFinished(unit.entry);
+                    int rrfEntryIndex = CPU.rob.executionFinished(unit.entry);
+                    CPU.rrf.executionFinished(rrfEntryIndex);
+                    
                     // Tell Everyone that the reservation station entry is now available
                     unit.entry.busy = false;
                     return true;

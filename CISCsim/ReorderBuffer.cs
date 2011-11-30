@@ -56,17 +56,24 @@ namespace CISCsim
                 return false;
         }
 
-        public void executionFinished(ReservationStationEntry resStationEntry)
+
+        /// <summary>
+        /// Tells the Reorder Buffer that execution has finished on an instruction inside the given resEntry
+        /// </summary>
+        /// <param name="resStationEntry"></param>
+        /// <returns>The RRF Tag index</returns>
+        public int executionFinished(ReservationStationEntry resStationEntry)
         {
             RobEntry robEntry;
             robEntry = this.buffer.FirstOrDefault(_robEntry => _robEntry.instruction == resStationEntry.instr);
             if (robEntry == null)
             {
                 System.Console.WriteLine("ROB.executionFinished(): An instruction finished but was not found in the ROB buffer");
-                return;
+                return -1;
             }
 
             robEntry.finished = true;
+            return robEntry.renameReg;
 
         }
 

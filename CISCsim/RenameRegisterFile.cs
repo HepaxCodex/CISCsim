@@ -56,5 +56,13 @@ namespace CISCsim
             return Array.IndexOf(rrfTable, rrfTable.First(entry => entry.busy == false));
         }
 
+        public void executionFinished(int rrfIndex)
+        {
+            this.rrfTable[rrfIndex].valid = true;
+        }
+
+        // TODO : Update Busy after Complete
+        // Put thedata into the ARF
+        // set rrf entry to not busy
     }
 }

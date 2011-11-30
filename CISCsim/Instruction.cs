@@ -13,7 +13,7 @@ namespace CISCsim
         /// <summary>
         /// All possible types of Execution
         /// </summary>
-        public enum ExecutionType {Integer, FloatingPoint, Logical, Mem, MultDiv, Branch, Nop}; // TODO: BeSure to USE ALL ExecutionTypes!!
+        public enum ExecutionType {Integer, FloatingPoint, Logical, Mem, MultDiv, Branch, Nop}; // NOTE : 
 
         /// <summary>
         /// Address of the Instruction
