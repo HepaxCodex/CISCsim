@@ -20,8 +20,10 @@ namespace CISCsim
                         if (arfEntry.tag == robEntry.renameReg)
                         {
                             arfEntry.busy = false;
+                            
                         }
                     }
+                    //TODO: Make sure that the reservation stations are updated
                     CPU.rrf.rrfTable[robEntry.renameReg].busy = false;
                     Statistics.instructionsCompleted++;
                 }
