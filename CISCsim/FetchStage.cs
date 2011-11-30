@@ -149,6 +149,11 @@ namespace CISCsim
             return this.fetchBuffer.Dequeue();
         }
 
+        public Instruction peekInstruction()
+        {
+            return this.fetchBuffer.Peek();
+        }
+
         /// <summary>
         /// Checks to see if there is a branch mispredict
         /// </summary>
@@ -178,7 +183,38 @@ namespace CISCsim
                 return (branchPrediction == actualResult);
             }
             return false;
+        }
+
+        /// <summary>
+        /// Checks against two instructions to see if there is a branch mispredict
+        /// </summary>
+        /// <returns>true if there is was mispredict</returns>
+        public bool isBranchMispredict(Instruction first, Instruction next)
+        {
+            if (!first.isABranch())
+            {
+                return false;
+            }
+
+            // If we got here, instr is a branch instruction
+            bool branchPrediction = CPU.branchPredictor.predictBranch(first.address);
+            bool actualResult;
+
+            // if next pc == first pc +8 , branch not taken
+            if (next.address == first.address + 8)
+            {
+                actualResult = false;
+            }
+            else
+            {
+                actualResult = true;
+            }
+
+            CPU.branchPredictor.updateBranchSM(first.address, branchPrediction, actualResult);
             
+            // Fixed this...it's an isBranchMISpredict function,
+            // so if branchPrediction != actualResult, you mispredicted--that is, return true
+            return (branchPrediction != actualResult);
         }
 
     }

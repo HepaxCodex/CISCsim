@@ -76,6 +76,20 @@ namespace CISCsim
 
         }
 
+        /// <summary>
+        /// Returns true if the instruction is an actual branch (not a jump)
+        /// </summary>
+        public bool isABranch()
+        {
+            if (this.executionType != ExecutionType.Branch)
+            {
+                return false;
+            }
+
+            return !(this.instruction == "j" || this.instruction == "jal" ||
+                    this.instruction == "jr" || this.instruction == "jalr");
+        }
+
 
         /// <summary>
         /// Figures out what type of Exeuction Unit is appliciable for the instruction
