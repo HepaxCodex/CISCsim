@@ -117,7 +117,12 @@ namespace CISCsim
                 }
                 else
                 {
-                    // TODO: end of the file - do something now?
+                    // ensures that this is onle performed onces
+                    if (CPU.lastInstructionFetched == false)
+                    {
+                        fetchBuffer.Last().isLastInstruction = true;
+                        CPU.lastInstructionFetched = true;
+                    }
                 }
             }
 

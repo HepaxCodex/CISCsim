@@ -43,6 +43,12 @@ namespace CISCsim
         public int dest;
         public string destString;
 
+
+        /// <summary>
+        /// Notes whether this instruciton is the last instruction in the system
+        /// </summary>
+        public bool isLastInstruction;
+
         /// <summary>
         /// The Type of the Instruction (used for Execution Stage)
         /// </summary>

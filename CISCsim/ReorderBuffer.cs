@@ -7,7 +7,7 @@ namespace CISCsim
 {
     class ReorderBuffer
     {
-        private Queue<RobEntry> buffer;
+        public Queue<RobEntry> buffer;
 
         public ReorderBuffer()
         {

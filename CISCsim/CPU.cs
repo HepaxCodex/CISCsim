@@ -50,9 +50,21 @@ namespace CISCsim
         public static DispatchStage dispatchStage = new DispatchStage();
         public static IssueStage issueStage = new IssueStage();
         public static ExecutionStage executeStage = new ExecutionStage();
+        public static CompleteStage completeStage = new CompleteStage();
 
 
         public static bool branchMispredictionStall = false;
+
+        /// <summary>
+        /// Tracks whether the last instruction in a trace file has been fetched
+        /// </summary>
+        public static bool lastInstructionFetched = false;
+
+        /// <summary>
+        /// Tracks whether the last instruction in a trace file has made it all the way
+        /// through the CPU
+        /// </summary>
+        public static bool lastInstructionCompleted = false;
 
     }
 }
