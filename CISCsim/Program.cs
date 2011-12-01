@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace CISCsim
 {
@@ -14,6 +15,8 @@ namespace CISCsim
             //BenTest.RunTest();
             //AndrewTest.RunTest();
 
+            Stopwatch sw = Stopwatch.StartNew();
+
             while (CPU.lastInstructionCompleted == false)
             {
                 CPU.completeStage.runCycle();
@@ -25,13 +28,11 @@ namespace CISCsim
                 System.Console.WriteLine("PC {0}", CPU.pc_count);
             }
 
+            sw.Stop();
 
+            System.Console.WriteLine("Time taken: {0} ms", sw.Elapsed.TotalMilliseconds);
             System.Console.WriteLine("Press Any Key To Exit\n");
             System.Console.Read();
         }
-
-
-
-
     }
 }
