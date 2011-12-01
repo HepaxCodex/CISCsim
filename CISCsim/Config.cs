@@ -11,7 +11,8 @@ namespace CISCsim
     static class Config
     {
         //public static string traceFilename = "..\\..\\InputFiles\\fpppp.tra";
-        public static string traceFilename = "..\\..\\InputFiles\\toast.tra";
+        //public static string traceFilename = "..\\..\\InputFiles\\toast.tra";
+        public static string traceFilename = "..\\..\\InputFiles\\fpppp.tra";
 
         public static int superScalerFactor             = 9;
         public static int numReservationStationEntries  = 10;
