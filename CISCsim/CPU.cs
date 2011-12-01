@@ -13,6 +13,7 @@ namespace CISCsim
     /// </summary>
     static class CPU
     {
+
         /// <summary>
         /// The program counter is updated by fetch when we
         /// look at the address of the instruction
@@ -72,5 +73,25 @@ namespace CISCsim
         /// </summary>
         public static bool lastInstructionCompleted = false;
 
+
+        public static void reset()
+        {
+
+            CPU.pc = 0;
+            CPU.pc_count = 0;
+            CPU.rrf = new RenameRegisterFile();
+            CPU.rob = new ReorderBuffer();
+            CPU.arf = new ArchRegFile();
+            CPU.branchPredictor = new GShareBranchPredictor();
+            CPU.fetchStage = new FetchStage();
+            CPU.decodeStage = new DecodeStage();
+            CPU.dispatchStage = new DispatchStage();
+            CPU.issueStage = new IssueStage();
+            CPU.executeStage = new ExecutionStage();
+            CPU.completeStage = new CompleteStage();
+            CPU.branchMispredictionStall = false;
+            CPU.lastInstructionFetched = false;
+            CPU.lastInstructionCompleted = false;
+        }
     }
 }

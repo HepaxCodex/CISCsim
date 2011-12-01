@@ -12,11 +12,11 @@ namespace CISCsim
     {
         //public static string traceFilename = "..\\..\\InputFiles\\fpppp.tra";
         //public static string traceFilename = "..\\..\\InputFiles\\toast.tra";
-        public static string traceFilename = "..\\..\\InputFiles\\fpppp.tra";
+        public static string traceFilename = "..\\..\\InputFiles\\toast.tra";
 
-        public static int superScalerFactor             = 9;
+        public static int superScalerFactor             = 10;
         public static int numReservationStationEntries  = 10;
-        public static int numFunctionalUnits            = 4; // Applies to everything except branch units
+        public static int numFunctionalUnits            = 10; // Applies to everything except branch units
         public static int numRenamingTableEntries       = 10;
         public static int numReorderBufferEntries       = 10;
 

@@ -8,6 +8,7 @@ namespace CISCsim
     /// <summary>
     /// Keeps the statistics on the CPU
     /// </summary>
+    [Serializable()] 
     static class Statistics
     {
         public static int totalCycles            = 0;
