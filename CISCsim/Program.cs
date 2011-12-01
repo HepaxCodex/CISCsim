@@ -14,31 +14,45 @@ namespace CISCsim
         {
             System.Console.WriteLine("Hello World\n");
 
-            //BenTest.RunTest();
-            //AndrewTest.RunTest();
-
-            Stopwatch sw = Stopwatch.StartNew();
-
-            while (CPU.lastInstructionCompleted == false)
-            {
-                CPU.completeStage.runCycle();
-                CPU.executeStage.runCycle();
-                CPU.issueStage.runCycle();
-                CPU.dispatchStage.runCycle();
-                CPU.decodeStage.runCycle();
-                CPU.fetchStage.Fetch();
-                //System.Console.WriteLine("PC {0}", CPU.pc_count);
-            }
-
-            sw.Stop();
-
-            System.Console.WriteLine("Time taken: {0} ms", sw.Elapsed.TotalMilliseconds);
-
             System.IO.StreamWriter statsOut = new System.IO.StreamWriter("statsOut.Write.csv");
-
-            
             writeStarter(statsOut);
-            writeData(statsOut);
+            //for (int k = 0; k < 5; k++)
+            //{
+            int k = 0;
+                for (int i = 10; i <= 20; i++)
+                {
+                    switch (k)
+                    {
+                        case 0: Config.superScalerFactor = i; break;
+                        case 1: Config.numReservationStationEntries = i; break;
+                        case 2: Config.numFunctionalUnits = i; break;
+                        case 3: Config.numRenamingTableEntries = i; break;
+                        case 4: Config.numReorderBufferEntries = i; break;
+                    }
+
+                    Stopwatch sw = Stopwatch.StartNew();
+
+                    while (CPU.lastInstructionCompleted == false)
+                    {
+                        CPU.completeStage.runCycle();
+                        CPU.executeStage.runCycle();
+                        CPU.issueStage.runCycle();
+                        CPU.dispatchStage.runCycle();
+                        CPU.decodeStage.runCycle();
+                        CPU.fetchStage.Fetch();
+                        //System.Console.WriteLine("PC {0}", CPU.pc_count);
+                    }
+
+                    sw.Stop();
+
+                    System.Console.WriteLine("Time taken: {0} ms", sw.Elapsed.TotalMilliseconds);
+                    writeData(statsOut);
+                    CPU.reset();
+                    Config.reset();
+                    Statistics.reset();
+                }
+            //}
+        
             statsOut.Close();
 
             System.Console.WriteLine("Press Any Key To Exit\n");
@@ -47,6 +61,12 @@ namespace CISCsim
 
         public static void writeStarter(StreamWriter statsOut)
         {
+            statsOut.Write("superScalerFactor             ,");
+            statsOut.Write("numReservationStationEntries  ,");
+            statsOut.Write("numFunctionalUnits            ,"); // Applies to everything except branch units
+            statsOut.Write("numRenamingTableEntries       ,");
+            statsOut.Write("numReorderBufferEntries       ,");
+
             statsOut.Write(" totalCycles            ,");
             statsOut.Write(" level1DataCacheMisses  ,");
             statsOut.Write(" level1InstrCacheMisses ,");
@@ -75,6 +95,13 @@ namespace CISCsim
 
         public static void writeData( StreamWriter statsOut)
         {
+            statsOut.Write(Config.superScalerFactor             );statsOut.Write(",");
+            statsOut.Write(Config.numReservationStationEntries  );statsOut.Write(",");
+            statsOut.Write(Config.numFunctionalUnits            );statsOut.Write(","); // Applies to everything except branch units
+            statsOut.Write(Config.numRenamingTableEntries       );statsOut.Write(",");
+            statsOut.Write(Config.numReorderBufferEntries); statsOut.Write(",");
+
+
             statsOut.Write(Statistics.totalCycles            ); statsOut.Write(",");
             statsOut.Write(Statistics.level1DataCacheMisses  ); statsOut.Write(",");
             statsOut.Write(Statistics.level1InstrCacheMisses ); statsOut.Write(",");
