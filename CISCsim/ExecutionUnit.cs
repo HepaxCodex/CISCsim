@@ -98,6 +98,11 @@ namespace CISCsim
         {
             if (this.busy)
             {
+                if (this.entry.instr.address == 4246912)
+                {
+                    int foo = 0;
+                    foo++;
+                }
                 this.remainingCycles--;
                 if (this.remainingCycles == 0)
                 {

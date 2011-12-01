@@ -137,7 +137,10 @@ namespace CISCsim
             for (int i = 0; i < targetUnitArray.Length; i++)
             {
                 if (targetUnitArray[i].busy == false)
+                {
                     targetUnitArray[i].LoadInstruction(resStationEntry);
+                    break;
+                }
             }
 
         }
