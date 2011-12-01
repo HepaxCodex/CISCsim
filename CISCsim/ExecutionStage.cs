@@ -75,8 +75,9 @@ namespace CISCsim
                     updateReservationStation(rrfEntryIndex, CPU.issueStage.memStation);
                     updateReservationStation(rrfEntryIndex, CPU.issueStage.multDivStation);
 
+                    if(unit.entry.instr.address == 4242144 && CPU.pc_count > 23200){
+                        int foo; foo=0; }
 
-                    
                     // Tell Everyone that the reservation station entry is now available
                     unit.entry.busy = false;
                     return true;

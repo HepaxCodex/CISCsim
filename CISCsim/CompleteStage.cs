@@ -26,6 +26,8 @@ namespace CISCsim
                     //TODO: Make sure that the reservation stations are updated
                     CPU.rrf.rrfTable[robEntry.renameReg].busy = false;
                     Statistics.instructionsCompleted++;
+                    if (robEntry.instruction.isLastInstruction)
+                        CPU.lastInstructionCompleted = true;
                 }
             }
         }
