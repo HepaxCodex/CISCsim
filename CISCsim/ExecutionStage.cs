@@ -128,6 +128,7 @@ namespace CISCsim
             }
 
             // If we check all of the exeuction units, and they are all busy == true, then there is no room
+            markReservationStationFull(resStationEntry);
             return false;
         }
 
@@ -173,6 +174,32 @@ namespace CISCsim
                     break;
             }
             return targetUnitArray;
+        }
+
+        private void markReservationStationFull(ReservationStationEntry resStationEntry)
+        {
+            switch (resStationEntry.instr.executionType)
+            {
+                case Instruction.ExecutionType.Branch:
+                    Statistics.branchExecutionUnitsFull++;
+                    break;
+                case Instruction.ExecutionType.FloatingPoint:
+                    Statistics.floatingExecutionUnitsFull++;
+                    break;
+                case Instruction.ExecutionType.Logical:
+                case Instruction.ExecutionType.Integer:
+                    Statistics.integerExecutionUnitsFull++;
+                    break;
+                case Instruction.ExecutionType.Mem:
+                    Statistics.memoryExecutionUnitsFull++;
+                    break;
+                case Instruction.ExecutionType.MultDiv:
+                    Statistics.multDivExecutionUnitsFull++;
+                    break;
+                default:
+                    System.Console.WriteLine("ERROR:ExecutionStage.canIssue, unknown Execution Type");
+                    break;
+            }
         }
 
     }

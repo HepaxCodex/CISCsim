@@ -32,6 +32,7 @@ namespace CISCsim
                 if (entry.busy == false)
                     return true;
             }
+            Statistics.registerRenameFileFull++;
             return false;
         }
 
