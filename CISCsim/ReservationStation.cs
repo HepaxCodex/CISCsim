@@ -38,7 +38,15 @@ namespace CISCsim
         /// <returns>True if full, false otherwise</returns>
         public bool isFull()
         {
-            return (this.maxListSize - this.buffer.Count == 0);
+            if (this.maxListSize - this.buffer.Count == 0)
+            {
+                Statistics.reservationStationFull++;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
             /*This method is technically correct but unnecessary in the implimentation
             bool full = true; // Start off true until we find a non-"busy" entry
