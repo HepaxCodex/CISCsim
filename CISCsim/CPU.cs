@@ -19,6 +19,12 @@ namespace CISCsim
         /// </summary>
         public static int pc;
 
+
+        /// <summary>
+        /// Count of PC's processed
+        /// </summary>
+        public static int pc_count = 0;
+
         /// <summary>
         /// The CPU's rename register file
         /// </summary>

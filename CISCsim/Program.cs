@@ -22,7 +22,7 @@ namespace CISCsim
                 CPU.dispatchStage.runCycle();
                 CPU.decodeStage.runCycle();
                 CPU.fetchStage.Fetch();
-                System.Console.WriteLine("PC {0}", CPU.pc);
+                System.Console.WriteLine("PC {0}", CPU.pc_count);
             }
 
 

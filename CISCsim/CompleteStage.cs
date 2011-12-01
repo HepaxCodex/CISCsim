@@ -12,7 +12,7 @@ namespace CISCsim
         {
             if (CPU.rob.buffer.Count != 0)
             {
-                while (CPU.rob.buffer.Peek().finished == true)
+                while (CPU.rob.buffer.Count > 0 && CPU.rob.buffer.Peek().finished == true )
                 {
                     RobEntry robEntry = CPU.rob.buffer.Dequeue();
                     foreach (ArfEntry arfEntry in CPU.arf.regFile)
