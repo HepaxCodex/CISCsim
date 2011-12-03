@@ -19,7 +19,7 @@ namespace CISCsim
             //for (int k = 0; k < 5; k++)
             //{
             int k = 0;
-                for (int i = 10; i <= 40; i++)
+                for (int i = 6; i <= 40; i++)
                 {
                     switch (k)
                     {
@@ -41,6 +41,7 @@ namespace CISCsim
                         CPU.decodeStage.runCycle();
                         CPU.fetchStage.Fetch();
                         //System.Console.WriteLine("PC {0}", CPU.pc_count);
+                        Statistics.totalCycles++;
                     }
 
                     sw.Stop();
