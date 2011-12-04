@@ -16,10 +16,10 @@ namespace CISCsim
 
             System.IO.StreamWriter statsOut = new System.IO.StreamWriter("statsOut.Write.csv");
             writeStarter(statsOut);
-            //for (int k = 0; k < 5; k++)
+            for (int k = 0; k < 5; k++)
             {
-            int k = 4;
-                for (int i = 15; i <= 40; i++)
+            //int k = 4;
+                for (int i = 5; i <= 40; i++)
                 {
                     switch (k)
                     {
