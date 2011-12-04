@@ -12,7 +12,7 @@ namespace CISCsim
     {
         //public static string traceFilename = "..\\..\\InputFiles\\fpppp.tra";
         //public static string traceFilename = "..\\..\\InputFiles\\toast.tra";
-        public static string traceFilename = "..\\..\\InputFiles\\perl.tra";
+        public static string traceFilename = "..\\..\\InputFiles\\applu.tra";
 
         public static int superScalerFactor             = 20;
         public static int numReservationStationEntries  = 20;
