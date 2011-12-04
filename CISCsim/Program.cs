@@ -17,8 +17,8 @@ namespace CISCsim
             System.IO.StreamWriter statsOut = new System.IO.StreamWriter("statsOut.Write.csv");
             writeStarter(statsOut);
             //for (int k = 0; k < 5; k++)
-            //{
-            int k = 3;
+            {
+            int k = 4;
                 for (int i = 15; i <= 40; i++)
                 {
                     switch (k)
@@ -29,6 +29,8 @@ namespace CISCsim
                         case 3: Config.numRenamingTableEntries = i; break;
                         case 4: Config.numReorderBufferEntries = i; break;
                     }
+
+                    CPU.reset();
 
                     Stopwatch sw = Stopwatch.StartNew();
 
@@ -52,7 +54,7 @@ namespace CISCsim
                     Config.reset();
                     Statistics.reset();
                 }
-            //}
+            }
         
             statsOut.Close();
 
