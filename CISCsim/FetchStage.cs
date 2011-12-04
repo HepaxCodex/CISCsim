@@ -123,7 +123,14 @@ namespace CISCsim
                     // ensures that this is onle performed onces
                     if (CPU.lastInstructionFetched == false)
                     {
-                        fetchBuffer.Last().isLastInstruction = true;
+                        if (this.fetchBuffer.Count > 0)
+                        {
+                            fetchBuffer.Last().isLastInstruction = true;
+                        }
+                        else
+                        {
+                            CPU.decodeStage.decodeBuffer.Last().isLastInstruction = true;
+                        }
                         CPU.lastInstructionFetched = true;
                     }
                 }

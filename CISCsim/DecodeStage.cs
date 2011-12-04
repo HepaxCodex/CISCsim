@@ -14,7 +14,7 @@ namespace CISCsim
         /// <summary>
         /// Holds the Instructions 
         /// </summary>
-        private Queue<Instruction> decodeBuffer;
+        public Queue<Instruction> decodeBuffer;
 
         private Instruction lastInstruction;
         private bool lastInstructionWasBranch;
