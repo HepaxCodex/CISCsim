@@ -18,8 +18,8 @@ namespace CISCsim
             writeStarter(statsOut);
             //for (int k = 0; k < 5; k++)
             //{
-            int k = 0;
-                for (int i = 6; i <= 40; i++)
+            int k = 3;
+                for (int i = 15; i <= 40; i++)
                 {
                     switch (k)
                     {
@@ -45,7 +45,7 @@ namespace CISCsim
                     }
 
                     sw.Stop();
-
+                    Statistics.avgInstructionsPerCycle = (float) Statistics.instructionsCompleted / (float)Statistics.totalCycles;
                     System.Console.WriteLine("Time taken: {0} ms", sw.Elapsed.TotalMilliseconds);
                     writeData(statsOut);
                     CPU.reset();
@@ -72,7 +72,7 @@ namespace CISCsim
             statsOut.Write(" level1DataCacheMisses  ,");
             statsOut.Write(" level1InstrCacheMisses ,");
             statsOut.Write(" level2CacheMisses      ,");
-            statsOut.Write(" instructionsExecuted   ,");
+            statsOut.Write(" avgInstructionsPerCycle   ,");
 
             statsOut.Write(" registerRenameFileFull ,");
             statsOut.Write(" reservationStationFull ,");
@@ -107,7 +107,7 @@ namespace CISCsim
             statsOut.Write(Statistics.level1DataCacheMisses  ); statsOut.Write(",");
             statsOut.Write(Statistics.level1InstrCacheMisses ); statsOut.Write(",");
             statsOut.Write(Statistics.level2CacheMisses      ); statsOut.Write(",");
-            statsOut.Write(Statistics.instructionsExecuted   ); statsOut.Write(",");
+            statsOut.Write(Statistics.avgInstructionsPerCycle   ); statsOut.Write(",");
 
             statsOut.Write(Statistics.registerRenameFileFull ); statsOut.Write(",");
             statsOut.Write(Statistics.reservationStationFull ); statsOut.Write(",");

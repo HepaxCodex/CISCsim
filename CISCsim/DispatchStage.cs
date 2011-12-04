@@ -43,7 +43,7 @@ namespace CISCsim
                 if (this.systemReadyForInstruction(instr) == false)
                 {
                     stop = true;
-                    continue;
+                    break;
                 }
 
                 instr = this.dispatchBuffer.Dequeue(); // Remove the instruction from the dispatch buffer
@@ -73,6 +73,10 @@ namespace CISCsim
 
                 // Update the ARF entry of the destination to busy and its tag to point to the RRF entry
                 CPU.arf.regFile[instr.dest].busy = true;
+                if (rrfTag == -1)
+                {
+                    Console.WriteLine("-1 rrf tag!");
+                }
                 CPU.arf.regFile[instr.dest].tag = rrfTag;
             }
         }
@@ -227,6 +231,8 @@ namespace CISCsim
                 Statistics.registerRenameFileFull++;
                 return false;
             }
+
+            
 
             return true;
         }

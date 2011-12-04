@@ -15,7 +15,8 @@ namespace CISCsim
         public static int level1DataCacheMisses = 0;
         public static int level1InstrCacheMisses = 0;
         public static int level2CacheMisses = 0;
-        public static int instructionsExecuted = 0;
+        public static float avgInstructionsPerCycle = 0;
+
 
         public static int registerRenameFileFull = 0;
         public static int reservationStationFull = 0;
@@ -43,7 +44,9 @@ namespace CISCsim
         Statistics.level1DataCacheMisses  = 0;
         Statistics.level1InstrCacheMisses = 0;
         Statistics.level2CacheMisses      = 0;
-        Statistics.instructionsExecuted   = 0;
+        Statistics.avgInstructionsPerCycle = 0;
+
+
 
         Statistics.registerRenameFileFull = 0;
         Statistics.reservationStationFull = 0;
