@@ -87,7 +87,7 @@ namespace CISCsim
         /// </summary>
         private void AttemptFloatingIssue()
         {
-            if (Config.numReservationStationEntries - this.fpStation.buffer.Count > 0)
+            if (this.fpStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
                 entry = this.fpStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
@@ -120,7 +120,10 @@ namespace CISCsim
         /// </summary>
         private void AttemptMemoryIssue()
         {
-            if (Config.numReservationStationEntries - this.memStation.buffer.Count > 0)
+            // Big bug here. Fixed. We're taking instructions OUT of the reservation stations
+            // in this stage, so we only want to check to see if there's any instruction in there,
+            // not to see if there's room to put one in. (Fixed in all attemptXIssue() funcs) --btf
+            if (this.memStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
                 entry = this.memStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
@@ -153,7 +156,7 @@ namespace CISCsim
         /// </summary>
         private void AttemptMultDivIssue()
         {
-            if (Config.numReservationStationEntries - this.multDivStation.buffer.Count > 0)
+            if (this.multDivStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
                 entry = this.multDivStation.buffer.FirstOrDefault(_entry => _entry.ready == true);
@@ -186,7 +189,7 @@ namespace CISCsim
         /// </summary>
         private void AttemptBranchIssue()
         {
-            if (Config.numReservationStationEntries - this.branchStation.buffer.Count > 0)
+            if (this.branchStation.buffer.Count > 0)
             {
                 ReservationStationEntry entry;
                 entry = this.branchStation.buffer.FirstOrDefault(_entry => _entry.ready == true);

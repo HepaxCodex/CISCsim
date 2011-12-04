@@ -27,8 +27,9 @@ namespace CISCsim
         /// <returns>True if there is a slot avialable, false otherwise</returns>
         public bool spaceAvailable()
         {
-            foreach (RRFEntry entry in this.rrfTable)
+            for (int i = 0; i < Config.numRenamingTableEntries; i++ )
             {
+                RRFEntry entry = this.rrfTable[i];
                 if (entry.busy == false)
                     return true;
             }
