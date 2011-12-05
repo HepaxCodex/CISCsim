@@ -49,6 +49,19 @@ namespace CISCsim
                     sw.Stop();
                     Statistics.avgInstructionsPerCycle = (float) Statistics.instructionsCompleted / (float)Statistics.totalCycles;
                     System.Console.WriteLine("Time taken: {0} ms", sw.Elapsed.TotalMilliseconds);
+                    System.Console.WriteLine("Instructions per cycle: {0}", Statistics.avgInstructionsPerCycle);
+                    System.Console.WriteLine("Branch prediction accuracy: {0}%", 100.0f - (100.0f * (float)Statistics.branchMispredicts / (float)Statistics.totalBranchPredictions));
+                    /*
+                    System.Console.WriteLine("Percentage cycles reservation stations were full: {0}%", 100.0f * (float)Statistics.reservationStationFull / (float)Statistics.totalCycles);
+
+                    float allExeUnitsFullPercent = 100.0f * (float)(Statistics.integerExecutionUnitsFull +
+                                                                   Statistics.floatingExecutionUnitsFull +
+                                                                   Statistics.branchExecutionUnitsFull +
+                                                                   Statistics.memoryExecutionUnitsFull +
+                                                                   Statistics.multDivExecutionUnitsFull) / (float)Statistics.totalCycles;
+                    System.Console.WriteLine("Percentage cycles execution units were full: {0}%", allExeUnitsFullPercent);
+                    */
+
                     writeData(statsOut);
                     CPU.reset();
                     Config.reset();
