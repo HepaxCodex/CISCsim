@@ -19,7 +19,7 @@ namespace CISCsim
             for (int k = 0; k < 5; k++)
             {
             //int k = 4;
-                for (int i = 7; i <= 40; i++)
+                for (int i = 10; i <= 30; i++)
                 {
                     switch (k)
                     {
